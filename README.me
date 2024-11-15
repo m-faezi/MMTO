@@ -4,8 +4,8 @@ python3 -m venv ./venvs/mmto
 source ./venvs/mmto/bin/activate
 
 ./recompile.sh
-pip install ./MDMTO
 pip install -r requirements.txt
+pip install ./MDMTO
 
 mkdir data #insert 3 channels
 python mmto.py
