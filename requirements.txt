@@ -1,0 +1,3 @@
+astropy
+scikit-image
+higra
