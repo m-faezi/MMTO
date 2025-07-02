@@ -34,7 +34,7 @@ def read_fits_file(filename):
         while img_data is None:
             # Extract image data from file and close
             try:
-                img_data = hdulist[hdu_index].data[0:3000, 0:3000]
+                img_data = hdulist[hdu_index].data
                 hdu_index += 1
 
             except IndexError:
