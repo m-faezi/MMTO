@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 import mdmto
 import operator
-from helpers import parameter_helper as ph
+from helpers import helper
 
 
 """Example program - using original settings"""
@@ -62,11 +62,11 @@ for fit_file in glob.glob(os.path.join('./data', '*.fits')):
     # divide area to mean(area) of leaves
     area[t.num_leaves(): -1] = area[t.num_leaves(): -1] / np.mean(area[t.num_leaves(): -1])
 
-    new_mu = ph.total_flux(t, image.shape, processed_image)
+    new_mu = helper.total_flux(t, image.shape, processed_image)
     mu = [-1] * (len(a) - len(new_mu))
     new_mu = mu + new_mu.tolist()
 
-    new_x, new_y = ph.centroid(t, image.shape)
+    new_x, new_y = helper.centroid(t, image.shape)
     x = [-1] * (len(a) - len(new_x))
     new_x = x + new_x.tolist()
     y = [-1] * (len(a) - len(new_y))
