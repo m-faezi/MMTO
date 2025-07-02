@@ -6,7 +6,7 @@ foreach (FILE ${TEST_FILES})
 endforeach ()
         
 add_custom_target(all_tests ALL
-        DEPENDS mdmto
+        DEPENDS mmto
         )
 
         

@@ -3,6 +3,6 @@ include_directories(${HIGRA_INCLUDE_DIRS} ${HIGRA_LIB_INCLUDE_DIRS} ${PYTHON_INC
 set(PYMODULE_COMPONENTS
         main.cpp)
 
-pybind11_add_module(mdmto ${PYMODULE_COMPONENTS})
+pybind11_add_module(mmto ${PYMODULE_COMPONENTS})
 
 

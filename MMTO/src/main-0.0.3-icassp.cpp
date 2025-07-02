@@ -103,7 +103,13 @@ namespace hg {
             const xt::pyarray<double> & d_3,
             const xt::pyarray<double> & a_1,
             const xt::pyarray<double> & a_2,
-            const xt::pyarray<double> & a_3
+            const xt::pyarray<double> & a_3,
+            const xt::pyarray<double> & norm_area_1,
+            const xt::pyarray<double> & norm_area_2,
+            const xt::pyarray<double> & norm_area_3,
+            const xt::pyarray<double> & moment_1,
+            const xt::pyarray<double> & moment_2,
+            const xt::pyarray<double> & moment_3
         ) {
             std::vector<const hg::tree *> trees{
                 &tree_1,
@@ -147,6 +153,20 @@ namespace hg {
             };
             auto first_a = as.begin(), last_a = as.end();
 
+            std::vector<const xt::pyarray<double> *> norm_areas{
+                &norm_area_1,
+                &norm_area_2,
+                &norm_area_3
+            };
+            auto first_norm_area = norm_areas.begin(), last_norm_area = norm_areas.end();
+
+            std::vector<const xt::pyarray<double> *> moments{
+                &moment_1,
+                &moment_2,
+                &moment_3
+            };
+            auto first_moment = moments.begin(), last_moment = moments.end();
+
             index_t i, j;
             auto ti = first, tj = first;
             auto mi = first_mu, mj = first_mu;
@@ -154,6 +174,8 @@ namespace hg {
             auto yi = first_y, yj = first_y;
             auto di = first_d, dj = first_d;
             auto ai = first_a, aj = first_a;
+            auto area_i = first_norm_area, area_j = first_norm_area;
+            auto moment_i = first_moment, moment_j = first_moment;
             auto ntrees = last - first;
             auto nleaves = num_leaves(**first);
 
@@ -202,9 +224,10 @@ namespace hg {
             }
 
             for (
-                ti = first, mi = first_mu, xi = first_x, yi = first_y, di = first_d, ai = first_a, i = 0;
+                ti = first, mi = first_mu, xi = first_x, yi = first_y, di = first_d, ai = first_a,
+                area_i = first_norm_area, moment_i = first_moment, i = 0;
                 ti != last;
-                ti++, i++, mi++, xi++, yi++, di++, ai++
+                ti++, i++, mi++, xi++, yi++, di++, ai++, area_i++, moment_i++
             ) {
 
                 for (index_t n: leaves_to_root_iterator(**ti, leaves_it::include, root_it::exclude)) {
@@ -212,92 +235,91 @@ namespace hg {
                     adj_lists[node_maps[i](parent(n, **ti))].push_back(represent_n);
 
                     for (
-                        tj = first, j = 0, mj = first_mu, xj = first_x, yj = first_y, dj = first_d, aj = first_a;
+                        tj = first, mj = first_mu, xj = first_x, yj = first_y, dj = first_d, aj = first_a,
+                        area_j = first_norm_area, moment_j = first_moment, j = 0;
                         j < (index_t) ntrees;
-                        tj++, j++, mj++, xj++, yj++, dj++, aj++
+                        tj++, j++, mj++, xj++, yj++, dj++, aj++, area_j++, moment_j++
                     ) {
                         (**tj).compute_children();
                         auto ses_ij_n = ses(i, j)(n);
                         if (
-                            (i != j) && !((**xi)[n] < 0) &&
-                            (!((**xj)[ses_ij_n] < 0) || ses_ij_n == root(**tj)) &&
-                            !(
-                                (((**xi)[n] == (**xj)[ses_ij_n])) &&
-                                ((**yi)[n] == (**yj)[ses_ij_n]) &&
-                                ((**ai)[n] == (**aj)[ses_ij_n])
-                            )
+                            (i < j) && !((**xi)[n] < 0)
                         ){
 
                             if (
-                                ((**di)[n] == (**dj)[ses_ij_n]) &&
-                                (sqrt(
-                                    ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
-                                    ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
-                                ) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](ses_ij_n))/3.14))){
+                                !((**xj)[ses_ij_n] < 0) &&
+                                    (
+                                        sqrt(
+                                            ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
+                                            ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
+                                            //) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](ses_ij_n))/3.14)
+                                        ) < 10
+                                    )
+                            ){
+
                                 double X[] = {
-                                    areas[i](n),
-                                    (**xi)[n],
-                                    (**yi)[n],
-                                    (**mi)[n]
+                                    //areas[i](n),
+                                    (**area_i)[n],
+                                    (**moment_i)[n],
+                                    (**mi)[n],
+                                    (**mi)[n]/(**area_i)[n]
+                                    //(**mi)[n]/areas[i](n)
                                 };
                                 double Y[] = {
-                                    areas[j](ses_ij_n),
-                                    (**xj)[ses_ij_n],
-                                    (**yj)[ses_ij_n],
-                                    (**mj)[ses_ij_n]
+                                    //areas[j](ses_ij_n),
+                                    (**area_j)[ses_ij_n],
+                                    (**moment_j)[ses_ij_n],
+                                    (**mj)[ses_ij_n],
+                                    (**mj)[ses_ij_n]/(**area_j)[ses_ij_n]
+                                    //(**mj)[ses_ij_n]/areas[j](ses_ij_n)
                                 };
-                                if (cosine_similarity(X, Y, 4) > 0.9){
-                                    adj_lists[node_maps[j](parent(ses_ij_n, **tj))].push_back(node_maps[i](n));
-                                }
-                                else{
 
+                                if (cosine_similarity(X, Y, 4) > 0.5){
                                     adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
-                                    for (auto c: children_iterator(ses_ij_n, **tj)) {
-                                        if (areas[j](c) > areas[i](n)){
-                                            adj_lists[node_maps[j](c)].push_back(node_maps[i](n));
-                                        }
-                                        else {
-                                            adj_lists[node_maps[i](n)].push_back(node_maps[j](c));
-                                        }
-                                    }
                                 }
                             }
-                            else{
-                                for (auto c_c: children_iterator(ses_ij_n, **tj)) {
-                                    if (
-                                        !((**xj)[c_c] < 0) &&
-                                        (
-                                            sqrt(
-                                                ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
-                                                ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
-                                            ) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](c_c))/3.14)
-                                        ) &&
-                                        ((**di)[n] == (**dj)[c_c])
-                                    ){
 
-                                        double X[] = {
-                                            areas[i](n),
-                                            (**xi)[n],
-                                            (**yi)[n],
-                                            (**mi)[n]
-                                        };
-                                        double Y[] = {
-                                            areas[j](c_c),
-                                            (**xj)[c_c],
-                                            (**yj)[c_c],
-                                            (**mj)[c_c]
-                                        };
-                                        if (cosine_similarity(X, Y, 4) > 0.9){
-                                            adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
+
+                            for (auto c_c: children_iterator(ses_ij_n, **tj)) {
+                                if (
+                                    !((**xj)[c_c] < 0) &&
+                                    (
+                                        sqrt(
+                                            ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
+                                            ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
+                                        )
+                                        // < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](c_c))/3.14)
+                                        < 10
+                                    )
+                                    // && ((**di)[n] == (**dj)[c_c])
+                                ){
+
+                                    double X[] = {
+                                        //areas[i](n),
+                                        (**area_i)[n],
+                                        (**moment_i)[n],
+                                        (**mi)[n],
+                                        (**mi)[n]/(**area_i)[n]
+                                        //(**mi)[n]/areas[i](n)
+                                    };
+                                    double Y[] = {
+                                        //areas[j](c_c),
+                                        (**area_j)[c_c],
+                                        (**moment_j)[c_c],
+                                        (**mj)[c_c],
+                                        (**mj)[c_c]/(**area_j)[c_c]
+                                        //(**mj)[c_c]/areas[j](c_c)
+                                    };
+                                    if (cosine_similarity(X, Y, 4) > 0.5){
+                                        adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
+                                    }
+
+                                    else{
+                                        if (areas[j](c_c) <= areas[i](n)){
+                                            adj_lists[node_maps[i](n)].push_back(node_maps[j](c_c));
                                         }
-
                                         else{
-                                            if (areas[j](c_c) <= areas[i](n)){
-                                                adj_lists[node_maps[i](n)].push_back(node_maps[j](c_c));
-                                            }
-                                            else{
-                                                adj_lists[node_maps[j](c_c)].push_back(node_maps[i](n));
-                                            }
+                                            adj_lists[node_maps[j](c_c)].push_back(node_maps[i](n));
                                         }
                                     }
                                 }
@@ -364,7 +386,13 @@ namespace hg {
             const xt::pyarray<double> & d_3,
             const xt::pyarray<double> & a_1,
             const xt::pyarray<double> & a_2,
-            const xt::pyarray<double> & a_3
+            const xt::pyarray<double> & a_3,
+            const xt::pyarray<double> & norm_area_1,
+            const xt::pyarray<double> & norm_area_2,
+            const xt::pyarray<double> & norm_area_3,
+            const xt::pyarray<double> & moment_1,
+            const xt::pyarray<double> & moment_2,
+            const xt::pyarray<double> & moment_3
         ) {
             std::vector<const hg::tree *> trees{
                 &tree_1,
@@ -408,6 +436,20 @@ namespace hg {
             };
             auto first_a = as.begin(), last_a = as.end();
 
+            std::vector<const xt::pyarray<double> *> norm_areas{
+                &norm_area_1,
+                &norm_area_2,
+                &norm_area_3
+            };
+            auto first_norm_area = norm_areas.begin(), last_norm_area = norm_areas.end();
+
+            std::vector<const xt::pyarray<double> *> moments{
+                &moment_1,
+                &moment_2,
+                &moment_3
+            };
+            auto first_moment = moments.begin(), last_moment = moments.end();
+
             index_t i, j;
             auto ti = first, tj = first;
             auto mi = first_mu, mj = first_mu;
@@ -415,6 +457,8 @@ namespace hg {
             auto yi = first_y, yj = first_y;
             auto di = first_d, dj = first_d;
             auto ai = first_a, aj = first_a;
+            auto area_i = first_norm_area, area_j = first_norm_area;
+            auto moment_i = first_moment, moment_j = first_moment;
             auto ntrees = last - first;
             auto nleaves = num_leaves(**first);
 
@@ -464,9 +508,10 @@ namespace hg {
             }
 
             for (
-                ti = first, mi = first_mu, xi = first_x, yi = first_y, di = first_d, ai = first_a, i = 0;
+                ti = first, mi = first_mu, xi = first_x, yi = first_y, di = first_d, ai = first_a,
+                area_i = first_norm_area, moment_i = first_moment, i = 0;
                 ti != last;
-                ti++, i++, mi++, xi++, yi++, di++, ai++
+                ti++, i++, mi++, xi++, yi++, di++, ai++, area_i++, moment_i++
             ) {
 
                 for (index_t n: leaves_to_root_iterator(**ti, leaves_it::include, root_it::exclude)) {
@@ -486,42 +531,47 @@ namespace hg {
                         merger.push_back(merge_self);
                     }
                     for (
-                        tj = first, j = 0, mj = first_mu, xj = first_x, yj = first_y, dj = first_d, aj = first_a;
+                        tj = first, j = 0, mj = first_mu, xj = first_x, yj = first_y, dj = first_d, aj = first_a,
+                        area_j = first_norm_area, moment_j = first_moment;
                         j < (index_t) ntrees;
-                        tj++, j++, mj++, xj++, yj++, dj++, aj++
+                        tj++, j++, mj++, xj++, yj++, dj++, aj++, area_j++, moment_j++
                     ) {
                         (**tj).compute_children();
                         auto ses_ij_n = ses(i, j)(n);
                         if (
-                            (i != j) && !((**xi)[n] < 0) &&
-                            (!((**xj)[ses_ij_n] < 0) || ses_ij_n == root(**tj)) &&
-                            !(
-                                (((**xi)[n] == (**xj)[ses_ij_n])) &&
-                                ((**yi)[n] == (**yj)[ses_ij_n]) &&
-                                ((**ai)[n] == (**aj)[ses_ij_n])
-                            )
+                            (i < j) && !((**xi)[n] < 0)
                         ){
 
                             if (
-                                ((**di)[n] == (**dj)[ses_ij_n]) &&
-                                (sqrt(
-                                    ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
-                                    ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
-                                ) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](ses_ij_n))/3.14))){
+                                !((**xj)[ses_ij_n] < 0) &&
+                                (
+                                    sqrt(
+                                        ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
+                                        ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
+                                    //) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](ses_ij_n))/3.14)
+                                    ) < 10
+                                )
+                            ){
+
                                 double X[] = {
-                                    areas[i](n),
-                                    (**xi)[n],
-                                    (**yi)[n],
-                                    (**mi)[n]
+                                    //areas[i](n),
+                                    (**area_i)[n],
+                                    (**moment_i)[n],
+                                    (**mi)[n],
+                                    (**mi)[n]/(**area_i)[n]
+                                    //(**mi)[n]/areas[i](n)
                                 };
                                 double Y[] = {
-                                    areas[j](ses_ij_n),
-                                    (**xj)[ses_ij_n],
-                                    (**yj)[ses_ij_n],
-                                    (**mj)[ses_ij_n]
+                                    //areas[j](ses_ij_n),
+                                    (**area_j)[ses_ij_n],
+                                    (**moment_j)[ses_ij_n],
+                                    (**mj)[ses_ij_n],
+                                    (**mj)[ses_ij_n]/(**area_j)[ses_ij_n]
+                                    //(**mj)[ses_ij_n]/areas[j](ses_ij_n)
                                 };
-                                if (cosine_similarity(X, Y, 4) > 0.9){
-                                    adj_lists[node_maps[j](parent(ses_ij_n, **tj))].push_back(node_maps[i](n));
+
+                                if (cosine_similarity(X, Y, 4) > 0.5){
+                                    adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
                                     vector<float> host;
                                     host.push_back(j+1);
                                     host.push_back((**aj)[ses_ij_n]);
@@ -539,71 +589,64 @@ namespace hg {
                                     merge_pair.push_back(merged);
                                     merger.push_back(merge_pair);
                                 }
-                                else{
-
-                                    adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
-                                    for (auto c: children_iterator(ses_ij_n, **tj)) {
-                                        if (areas[j](c) > areas[i](n)){
-                                            adj_lists[node_maps[j](c)].push_back(node_maps[i](n));
-                                        }
-                                        else {
-                                            adj_lists[node_maps[i](n)].push_back(node_maps[j](c));
-                                        }
-                                    }
-                                }
                             }
-                            else{
-                                for (auto c_c: children_iterator(ses_ij_n, **tj)) {
-                                    if (
-                                        !((**xj)[c_c] < 0) &&
-                                        (
-                                            sqrt(
-                                                ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
-                                                ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
-                                            ) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](c_c))/3.14)
-                                        ) &&
-                                        ((**di)[n] == (**dj)[c_c])
-                                    ){
 
-                                        double X[] = {
-                                            areas[i](n),
-                                            (**xi)[n],
-                                            (**yi)[n],
-                                            (**mi)[n]
-                                        };
-                                        double Y[] = {
-                                            areas[j](c_c),
-                                            (**xj)[c_c],
-                                            (**yj)[c_c],
-                                            (**mj)[c_c]
-                                        };
-                                        if (cosine_similarity(X, Y, 4) > 0.9){
-                                            adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
-                                            vector<float> host;
-                                            host.push_back(j+1);
-                                            host.push_back((**aj)[c_c]);
-                                            host.push_back((**xj)[c_c]);
-                                            host.push_back((**yj)[c_c]);
-                                            host.push_back((**mj)[c_c]);
-                                            vector<float> merged;
-                                            merged.push_back(i+1);
-                                            merged.push_back((**ai)[n]);
-                                            merged.push_back((**xi)[n]);
-                                            merged.push_back((**yi)[n]);
-                                            merged.push_back((**mi)[n]);
-                                            vector<vector<float>> merge_pair;
-                                            merge_pair.push_back(host);
-                                            merge_pair.push_back(merged);
-                                            merger.push_back(merge_pair);
+
+                            for (auto c_c: children_iterator(ses_ij_n, **tj)) {
+                                if (
+                                    !((**xj)[c_c] < 0) &&
+                                    (
+                                        sqrt(
+                                            ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
+                                            ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
+                                        //) < min(sqrt(areas[i](n))/3.14, sqrt(areas[j](c_c))/3.14)
+                                        ) < 10
+                                    )
+                                ){
+
+                                    double X[] = {
+                                        //areas[i](n),
+                                        (**area_i)[n],
+                                        (**moment_i)[n],
+                                        (**mi)[n],
+                                        (**mi)[n]/(**area_i)[n]
+                                        //(**mi)[n]/areas[i](n)
+                                    };
+                                    double Y[] = {
+                                        //areas[j](c_c),
+                                        (**area_j)[c_c],
+                                        (**moment_j)[c_c],
+                                        (**mj)[c_c],
+                                        (**mj)[c_c]/(**area_j)[c_c]
+                                        //(**mj)[c_c]/areas[j](c_c)
+                                    };
+
+                                    if (cosine_similarity(X, Y, 4) > 0.5){
+                                        adj_lists[node_maps[j](ses_ij_n)].push_back(node_maps[i](n));
+                                        vector<float> host;
+                                        host.push_back(j+1);
+                                        host.push_back((**aj)[c_c]);
+                                        host.push_back((**xj)[c_c]);
+                                        host.push_back((**yj)[c_c]);
+                                        host.push_back((**mj)[c_c]);
+                                        vector<float> merged;
+                                        merged.push_back(i+1);
+                                        merged.push_back((**ai)[n]);
+                                        merged.push_back((**xi)[n]);
+                                        merged.push_back((**yi)[n]);
+                                        merged.push_back((**mi)[n]);
+                                        vector<vector<float>> merge_pair;
+                                        merge_pair.push_back(host);
+                                        merge_pair.push_back(merged);
+                                        merger.push_back(merge_pair);
+                                    }
+
+                                    else{
+                                        if (areas[j](c_c) <= areas[i](n)){
+                                            adj_lists[node_maps[i](n)].push_back(node_maps[j](c_c));
                                         }
-
                                         else{
-                                            if (areas[j](c_c) <= areas[i](n)){
-                                                adj_lists[node_maps[i](n)].push_back(node_maps[j](c_c));
-                                            }
-                                            else{
-                                                adj_lists[node_maps[j](c_c)].push_back(node_maps[i](n));
-                                            }
+                                            adj_lists[node_maps[j](c_c)].push_back(node_maps[i](n));
                                         }
                                     }
                                 }
@@ -652,7 +695,7 @@ namespace hg {
         }
 
 
-        PYBIND11_MODULE(mdmto, m)
+        PYBIND11_MODULE(mmto, m)
         {
             xt::import_numpy();
 

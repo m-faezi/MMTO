@@ -704,7 +704,7 @@ namespace hg {
         }
 
 
-        PYBIND11_MODULE(mdmto, m)
+        PYBIND11_MODULE(mmto, m)
         {
             xt::import_numpy();
 

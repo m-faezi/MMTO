@@ -1,4 +1,4 @@
-MDMTO
+MMTO
 ==============
 
 Multi-dimensional faint object detection
@@ -12,7 +12,7 @@ Installation
  - `python -m venv mmto`
  - `source mmto/bin/activate`
  - `./recompile.sh (make sure to have gsl)`
- - `pip install ./MDMTO`
+ - `pip install ./MMTO`
 
 Build a binary wheel
 --------------------
@@ -21,11 +21,11 @@ A binary wheel ease the redistribution of your project and can be installed with
 
 **Create wheel**
 
- - `cd MDMTO`
+ - `cd MMTO`
  - `python setup.py bdist_wheel`
- - `pip install ./MDMTO`
+ - `pip install ./MMTO`
  
- The wheel is created in the directory `MDMTO/dist`, it will be named `mdmto-XXXXX.whl` where `XXXXXX` are name tags identifying the current platform and Python version. 
+ The wheel is created in the directory `MMTO/dist`, it will be named `mmto-XXXXX.whl` where `XXXXXX` are name tags identifying the current platform and Python version. 
  
 **Install wheel**
  

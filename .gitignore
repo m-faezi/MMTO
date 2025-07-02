@@ -1,9 +1,12 @@
 *.egg-info/
 .ipynb_checkpoints/
 dist/
-MDMTO/build/
+MMTO/build/
 *.py[cod]
 
 # OS X
 .DS_Store
 .idea/
+
+mtolib/lib/*.so
+
