@@ -239,7 +239,7 @@ namespace hg {
                         tj = first, mj = first_mu, xj = first_x, yj = first_y, dj = first_d, aj = first_a,
                         area_j = first_norm_area, moment_j = first_moment, j = 0;
                         // j < (index_t) ntrees;
-                        j < (index_t) ntrees, tj != ti;
+                        j < (index_t) ntrees && tj != ti;
                         tj++, j++, mj++, xj++, yj++, dj++, aj++, area_j++, moment_j++
                     ) {
                         (**tj).compute_children();
