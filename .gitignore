@@ -3,6 +3,7 @@
 MMTO/dist/
 MMTO/build/
 MMTO/mmto/
+mmto/
 *.py[cod]
 
 # OS X
