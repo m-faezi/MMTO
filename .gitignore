@@ -10,3 +10,8 @@ MMTO/build/
 
 mtolib/lib/*.so
 
+*.png
+*.csv
+*.fits
+venvs/
+
