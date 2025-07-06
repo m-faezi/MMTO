@@ -2,6 +2,7 @@
 .ipynb_checkpoints/
 MMTO/dist/
 MMTO/build/
+MMTO/mmto/
 *.py[cod]
 
 # OS X
