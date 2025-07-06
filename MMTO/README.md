@@ -13,7 +13,6 @@ Installation
 ```bash
 python -m venv mmto                  # Create a virtual environment
 source mmto/bin/activate             # Activate the virtual environment
-./recompile.sh                       # Build C++ components (requires GSL)
 pip install ./MMTO                   # Install the MMTO Python package
 ```
 
