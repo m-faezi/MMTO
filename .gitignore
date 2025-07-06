@@ -8,8 +8,6 @@ MMTO/build/
 .DS_Store
 .idea/
 
-mtolib/lib/*.so
-
 *.png
 *.csv
 *.fits
