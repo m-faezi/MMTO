@@ -9,10 +9,13 @@ Installation
 
 **Requires a C++ 14 compiler and cmake**
 
- - `python -m venv mmto`
- - `source mmto/bin/activate`
- - `./recompile.sh (make sure to have gsl)`
- - `pip install ./MMTO`
+
+```bash
+python -m venv mmto                  # Create a virtual environment
+source mmto/bin/activate             # Activate the virtual environment
+./recompile.sh                       # Build C++ components (requires GSL)
+pip install ./MMTO                   # Install the MMTO Python package
+```
 
 Build a binary wheel
 --------------------

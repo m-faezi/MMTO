@@ -1,6 +1,0 @@
-astropy
-scikit-image
-higra
-scikit-build
-
-

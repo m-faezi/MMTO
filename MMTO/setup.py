@@ -84,6 +84,7 @@ setup(
         'pandas>=1.2.4',
         'astropy>=4.2',
         'scikit-image>=0.18.1',
+        'scikit-build',
     ],
     zip_safe=False
 )
