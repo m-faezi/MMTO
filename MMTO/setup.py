@@ -85,6 +85,8 @@ setup(
         'astropy>=4.2',
         'scikit-image>=0.18.1',
         'scikit-build',
+        'fuzzy-c-means',
+        'scikit-learn',
     ],
     zip_safe=False
 )

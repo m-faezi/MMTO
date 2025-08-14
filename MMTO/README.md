@@ -13,36 +13,12 @@ Installation
 ```bash
 python -m venv mmto                  # Create a virtual environment
 source mmto/bin/activate             # Activate the virtual environment
-pip install ./MMTO                   # Install the MMTO Python package
+
+pip install -U pip setuptools wheel scikit-build cmake ninja
+
+pip install "numpy>=2.3" "higra>=0.6.12" "pybind11>=2.12"
+
+PIP_NO_BUILD_ISOLATION=1 pip install -v ./MMTO
+
 ```
 
-Build a binary wheel
---------------------
- 
-A binary wheel ease the redistribution of your project and can be installed with *pip* on a client machine without a compiler.
-
-**Create wheel**
-
- - `cd MMTO`
- - `python setup.py bdist_wheel`
- - `pip install ./MMTO`
- 
- The wheel is created in the directory `MMTO/dist`, it will be named `mmto-XXXXX.whl` where `XXXXXX` are name tags identifying the current platform and Python version. 
- 
-**Install wheel**
- 
-A wheel can be installed with *pip*:
- 
- - `pip install wheel_name.whl`
- 
- Note that a binary wheel is specific to a platform and to a python version (a wheel built on Windows with Python 3.5 can only be installed on Windows with Python 3.5).
-
-Tests
------
-
-Tests are run automatically at the end of a build: the build will fail if tests are not successful. 
-
-Known Issues
-------------
-
-Clang on Linux may not work due to ABI compatibilty issues.
