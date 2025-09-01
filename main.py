@@ -79,12 +79,11 @@ for fit_file in glob.glob(os.path.join('./data', '*.fits')):
     ra, dec = helper.sky_coordinates(y, x, header)
 
     a, b, theta = helper.second_order_moments(tree_of_segments, image.shape[:2], image)
-    flux = hg.accumulate_sequential(tree_of_segments, image, hg.Accumulators.sum)
 
     trees.append(tree_of_segments)
     latitudes.append(x[::-1])
     longitudes.append(y[::-1])
-    mu_list.append(flux[tree_of_segments.num_leaves():][::-1])
+    mu_list.append(np.log10(volume[tree_of_segments.num_leaves():][::-1]))
     graphs.append(graph_structure)
     depths.append(depth[tree_of_segments.num_leaves():][::-1])
     ids.append(unique_segment_ids[tree_of_segments.num_leaves():][::-1])

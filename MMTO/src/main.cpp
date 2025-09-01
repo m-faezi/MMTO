@@ -7,6 +7,7 @@
 #include <vector>
 #include <stack>
 #include <iostream>
+#include <iomanip>
 #define FORCE_IMPORT_ARRAY
 #include "xtensor-python/pyarray.hpp"
 
@@ -249,7 +250,7 @@ namespace hg {
                             sqrt(
                                 ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
                                 ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
-                            ) < 10
+                            ) < 3
                         ){
 
                             double X[] = {
@@ -265,7 +266,7 @@ namespace hg {
                                 (**mj)[ses_ij_n]/(**area_j)[ses_ij_n]
                             };
 
-                            if (cosine_similarity(X, Y, 4) > 0.5){
+                            if (cosine_similarity(X, Y, 4) > 0.93){
                                 adj_lists[node_maps[j](parent(ses_ij_n, **tj))].push_back(node_maps[i](n));
                             }
                         }
@@ -277,11 +278,9 @@ namespace hg {
                                 sqrt(
                                     ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
                                     ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
-                                ) < 10
+                                ) < 3
 
                             ){
-
-                                // std::cout << "debug" << std::endl;
 
                                 double X[] = {
                                     (**area_i)[n],
@@ -295,7 +294,11 @@ namespace hg {
                                     (**mj)[c_c],
                                     (**mj)[c_c]/(**area_j)[c_c]
                                 };
-                                if (cosine_similarity(X, Y, 4) > 0.5){
+
+                                //std::cout << std::fixed << std::setprecision(10);
+                                //std::cout << cosine_similarity(X, Y, 4) << std::endl;
+
+                                if (cosine_similarity(X, Y, 4) > 0.93){
                                     adj_lists[node_maps[j](parent(c_c, **tj))].push_back(node_maps[i](n));
                                 }
 
