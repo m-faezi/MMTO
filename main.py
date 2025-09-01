@@ -10,7 +10,7 @@ import helper
 import background
 
 """Example program - using original settings"""
-trees, latitudes, longitudes, mu_list, graphs, depths, ids, areas, moments = [], [], [], [], [], [], [], [], []
+trees, latitudes, longitudes, mu_list, graphs, depths, ids, areas, reffs = [], [], [], [], [], [], [], [], []
 
 for fit_file in glob.glob(os.path.join('./data', '*.fits')):
 
@@ -88,9 +88,9 @@ for fit_file in glob.glob(os.path.join('./data', '*.fits')):
     depths.append(depth[tree_of_segments.num_leaves():][::-1])
     ids.append(unique_segment_ids[tree_of_segments.num_leaves():][::-1])
     areas.append(area[n_map_segments][tree_of_segments.num_leaves():][::-1])
-    moments.append(first_hu_moment[tree_of_segments.num_leaves():][::-1])
+    reffs.append(r_eff[tree_of_segments.num_leaves():][::-1])
 
-tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *moments)
+tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
 
 fusion_tree, fusion_altitude = hg.component_tree_max_tree(
     graphs[0],
