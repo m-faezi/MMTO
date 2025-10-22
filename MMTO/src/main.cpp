@@ -276,7 +276,7 @@ namespace hg {
 
                             double cos_sim = cosine_similarity(X, Y, 4);
 
-                            if (cos_sim > 0.3) {
+                            if (cos_sim > 0.93) {
                                 // Add row to CSV
                                 csv_content << i << "," << n << ","
                                            << j << "," << ses_ij_n << ","
