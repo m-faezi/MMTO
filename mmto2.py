@@ -97,9 +97,9 @@ def mmto_run():
             depths.append(maxtree.gamma[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
             ids.append(extractor.ids[tree_of_segments.num_leaves():])
             areas.append(maxtree.area[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
-            reffs.append(maxtree.area[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1]) #change the value to reff
+            reffs.append(r_eff[tree_of_segments.num_leaves():][::-1])
 
-        tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
+        mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
 
 
 
