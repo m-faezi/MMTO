@@ -1,9 +1,11 @@
 """We improved parameters in this version"""
 from image import Image
 from dark_frame import DarkFrame
+
 from run import Run
 from max_tree import MaxTree
 from extractor import Extractor
+from mto2lib.utils import base_utils as uts
 
 from mto2lib.utils import io_utils
 import sys
@@ -61,16 +63,41 @@ def mmto_run():
             extractor = Extractor()
             extractor.create_segmentation(maxtree, image, run)
 
+            tree_of_segments = extractor.maxtree_of_segment
+            segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
+            label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
+            label_data[segment_ids] = np.arange(len(segment_ids))
+            seg_array = hg.reconstruct_leaf_data(tree_of_segments, label_data)
+
+            coords_per_segment = [[] for _ in range(len(segment_ids))]
+
+            for y_ in range(seg_array.shape[0]):
+
+                for x_ in range(seg_array.shape[1]):
+
+                    label = seg_array[y_, x_]
+
+                    if label >= 0:
+                        coords_per_segment[label].append((y_, x_))
+
+            r_eff = [uts.half_light_radius(image.image, coords) for coords in coords_per_segment]
+
+            centroids = [uts.weighted_centroid_coords_from_segments(image.image, coords) for coords in coords_per_segment]
+
+            y = [cen[0] for cen in centroids]
+            x = [cen[1] for cen in centroids]
+
+            flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
+
 
             trees.append(extractor.maxtree_of_segment)
-            latitudes.append(maxtree.x[extractor.segment_node_map])
-            longitudes.append(maxtree.y[extractor.segment_node_map])
-            mu_list.append(maxtree.volume[extractor.segment_node_map])
-            graphs.append(maxtree.graph)
-            depths.append(maxtree.gamma[extractor.segment_node_map])
-            ids.append(extractor.ids)
-            areas.append(maxtree.area[extractor.segment_node_map])
-            reffs.append(maxtree.area[extractor.segment_node_map]) #change the value to reff
+            latitudes.append(x[::-1])
+            longitudes.append(y[::-1])
+            mu_list.append(flux[tree_of_segments.num_leaves():][::-1])
+            depths.append(maxtree.gamma[tree_of_segments.num_leaves():][::-1])
+            ids.append(extractor.ids[tree_of_segments.num_leaves():])
+            areas.append(maxtree.area[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
+            reffs.append(r_eff[tree_of_segments.num_leaves():][::-1]) #change the value to reff
 
         tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
 

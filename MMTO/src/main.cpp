@@ -239,7 +239,7 @@ namespace hg {
                 ti++, i++, mi++, xi++, yi++, di++, ai++, area_i++, moment_i++
             ) {
 
-                for (index_t n: leaves_to_root_iterator(**ti, leaves_it::exclude, root_it::exclude)) {
+                for (index_t n: leaves_to_root_iterator(**ti, leaves_it::include, root_it::exclude)) {
                     auto represent_n = node_maps[i](n);
                     adj_lists[node_maps[i](parent(n, **ti))].push_back(represent_n);
 
