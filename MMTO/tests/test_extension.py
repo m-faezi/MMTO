@@ -1,4 +1,4 @@
-import main as m
+import mmto as m
 import unittest
 import numpy as np
 import higra as hg
