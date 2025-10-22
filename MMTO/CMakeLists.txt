@@ -113,7 +113,7 @@ find_package(NumPy REQUIRED)
 add_subdirectory(src)
 
 configure_file(setup.py ${CMAKE_CURRENT_BINARY_DIR}/setup.py)
-configure_file(README.md ${CMAKE_CURRENT_BINARY_DIR}/README.md COPYONLY)
+# configure_file(README.md ${CMAKE_CURRENT_BINARY_DIR}/README.md COPYONLY)
 
 ##########################
 #  Build Tests
