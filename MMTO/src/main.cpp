@@ -8,6 +8,8 @@
 #include <stack>
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <sstream>
 #define FORCE_IMPORT_ARRAY
 #include "xtensor-python/pyarray.hpp"
 
@@ -224,6 +226,12 @@ namespace hg {
                 node_maps[i](root(**ti)) = rootn;
             }
 
+            // Create CSV content
+            std::stringstream csv_content;
+            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,flux_i,flux_j,cosine_similarity,distance\n";
+
+            int match_count = 0;
+
             for (
                 ti = first, mi = first_mu, xi = first_x, yi = first_y, di = first_d, ai = first_a,
                 area_i = first_norm_area, moment_i = first_moment, i = 0;
@@ -246,12 +254,12 @@ namespace hg {
                         (**tj).compute_children();
                         auto ses_ij_n = ses(i, j)(n);
 
-                        if (
-                            sqrt(
-                                ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
-                                ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
-                            ) < 3
-                        ){
+                        double dist = sqrt(
+                            ((**xi)[n] - (**xj)[ses_ij_n])*((**xi)[n] - (**xj)[ses_ij_n]) +
+                            ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
+                        );
+
+                        if (dist < 3000) {
 
                             double X[] = {
                                 (**area_i)[n],
@@ -266,92 +274,33 @@ namespace hg {
                                 (**mj)[ses_ij_n]/(**area_j)[ses_ij_n]
                             };
 
-                            if (cosine_similarity(X, Y, 4) > 0.93){
-                                adj_lists[node_maps[j](parent(ses_ij_n, **tj))].push_back(node_maps[i](n));
-                            }
-                        }
+                            double cos_sim = cosine_similarity(X, Y, 4);
 
-
-                        for (auto c_c: children_iterator(ses_ij_n, **tj)) {
-                            if (
-
-                                sqrt(
-                                    ((**xi)[n] - (**xj)[c_c])*((**xi)[n] - (**xj)[c_c]) +
-                                    ((**yi)[n] - (**yj)[c_c])*((**yi)[n] - (**yj)[c_c])
-                                ) < 3
-
-                            ){
-
-                                double X[] = {
-                                    (**area_i)[n],
-                                    (**moment_i)[n],
-                                    (**mi)[n],
-                                    (**mi)[n]/(**area_i)[n]
-                                };
-                                double Y[] = {
-                                    (**area_j)[c_c],
-                                    (**moment_j)[c_c],
-                                    (**mj)[c_c],
-                                    (**mj)[c_c]/(**area_j)[c_c]
-                                };
-
-                                //std::cout << std::fixed << std::setprecision(10);
-                                //std::cout << cosine_similarity(X, Y, 4) << std::endl;
-
-                                if (cosine_similarity(X, Y, 4) > 0.93){
-                                    adj_lists[node_maps[j](parent(c_c, **tj))].push_back(node_maps[i](n));
-                                }
-
-                                else{
-                                    if ((**area_j)[c_c] <= (**area_i)[n]){
-                                        adj_lists[node_maps[i](n)].push_back(node_maps[j](c_c));
-                                    }
-                                    else{
-                                        adj_lists[node_maps[j](c_c)].push_back(node_maps[i](n));
-                                    }
-                                }
+                            if (cos_sim > 0.3) {
+                                // Add row to CSV
+                                csv_content << i << "," << n << ","
+                                           << j << "," << ses_ij_n << ","
+                                           << (**mi)[n] << "," << (**mj)[ses_ij_n] << ","
+                                           << cos_sim << "," << dist << "\n";
+                                match_count++;
                             }
                         }
                     }
                 }
             }
 
-            auto nnodes = adj_lists.size();
-            array_1d<index_t> sorted_nodes = xt::empty<index_t>({nnodes});
-            array_1d<char> marks = xt::zeros<char>({nnodes});
-            stack<index_t> s;
-
-            index_t count = 0;
-            s.push(rootn);
-            while (!s.empty()) {
-                auto n = s.top();
-                if (marks(n) > 0) {
-                    s.pop();
-                    if (marks(n) == 1) {
-                        sorted_nodes(count++) = n;
-                        marks(n) = 2;
-                    }
-                } else {
-                    marks(n) = 1;
-                    for (auto o: adj_lists[n]) {
-                        if (marks(o) != 2) {
-                            s.push(o);
-                        }
-                    }
-                }
+            // Write CSV to file
+            std::ofstream csv_file("detection_colors.csv");
+            if (csv_file.is_open()) {
+                csv_file << csv_content.str();
+                csv_file.close();
+                std::cout << "CSV file 'object_matches.csv' created with " << match_count << " matches." << std::endl;
+            } else {
+                std::cerr << "Error: Could not create CSV file." << std::endl;
             }
 
-            xt::pyarray<double> depth = xt::zeros<index_t>({nnodes});
-
-            for (index_t i = nnodes - 1; i >= 0; i--) {
-                index_t n = sorted_nodes[i];
-                for (auto o: adj_lists[n]) {
-                    depth(o) = (std::max)(depth(o), depth(n) + 1);
-                }
-            }
-
-            return xt::eval(xt::view(depth, xt::range(0, nleaves)));
-
+            // Return the CSV content as string (optional)
+            return csv_content.str();
         }
 
         PYBIND11_MODULE(mmto, m)
@@ -366,5 +315,4 @@ namespace hg {
         }
     }
 }
-
 
