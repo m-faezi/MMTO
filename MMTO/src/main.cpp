@@ -259,7 +259,7 @@ namespace hg {
                             ((**yi)[n] - (**yj)[ses_ij_n])*((**yi)[n] - (**yj)[ses_ij_n])
                         );
 
-                        if (dist < 3000) {
+                        if (dist < 3) {
 
                             double X[] = {
                                 (**area_i)[n],
