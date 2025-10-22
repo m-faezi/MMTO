@@ -4,7 +4,6 @@ import os
 import glob
 import higra as hg
 import numpy as np
-from PIL import Image
 import mmto
 import helper
 import background
@@ -91,20 +90,5 @@ for fit_file in glob.glob(os.path.join('./data', '*.fits')):
     reffs.append(r_eff[tree_of_segments.num_leaves():][::-1])
 
 tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
-
-fusion_tree, fusion_altitude = hg.component_tree_max_tree(
-    graphs[0],
-    tree_map
-)
-
-colors = np.random.randint(
-    0,
-    256,
-    (fusion_tree.num_vertices(), 3),
-    dtype=np.uint8,
-)
-colors[fusion_tree.root(), :] = 0
-seg = hg.reconstruct_leaf_data(fusion_tree, colors)
-Image.fromarray(np.flipud(seg)).save("mmto.png")
 
 
