@@ -62,15 +62,15 @@ def mmto_run():
             extractor.create_segmentation(maxtree, image, run)
 
 
-            trees.append(maxtree.tree_structure)
-            latitudes.append(maxtree.x)
-            longitudes.append(maxtree.y)
-            mu_list.append(maxtree.volume)
+            trees.append(extractor.maxtree_of_segment)
+            latitudes.append(maxtree.x[extractor.segment_node_map])
+            longitudes.append(maxtree.y[extractor.segment_node_map])
+            mu_list.append(maxtree.volume[extractor.segment_node_map])
             graphs.append(maxtree.graph)
-            depths.append(maxtree.gamma)
+            depths.append(maxtree.gamma[extractor.segment_node_map])
             ids.append(extractor.ids)
-            areas.append(maxtree.area)
-            reffs.append(maxtree.area) #change the value to reff
+            areas.append(maxtree.area[extractor.segment_node_map])
+            reffs.append(maxtree.area[extractor.segment_node_map]) #change the value to reff
 
         tree_map = mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
 
