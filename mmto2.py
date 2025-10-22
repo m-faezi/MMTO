@@ -1,4 +1,3 @@
-"""We improved parameters in this version"""
 from image import Image
 from dark_frame import DarkFrame
 
@@ -7,16 +6,12 @@ from max_tree import MaxTree
 from extractor import Extractor
 from mto2lib.utils import base_utils as uts
 
-from mto2lib.utils import io_utils
-import sys
-
 import os
 import glob
 import higra as hg
 import numpy as np
 import mmto
-import helper
-import background
+
 
 """Example program - using original settings"""
 trees, latitudes, longitudes, mu_list, graphs, depths, ids, areas, reffs = [], [], [], [], [], [], [], [], []
@@ -95,12 +90,12 @@ def mmto_run():
             longitudes.append(y[::-1])
             mu_list.append(flux[tree_of_segments.num_leaves():][::-1])
             depths.append(maxtree.gamma[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
-            ids.append(extractor.ids[tree_of_segments.num_leaves():])
+            ids.append(extractor.ids[tree_of_segments.num_leaves():][::-1])
             areas.append(maxtree.area[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
             reffs.append(r_eff[tree_of_segments.num_leaves():][::-1])
 
-        mmto.tree_map(*trees, *mu_list, *latitudes, *longitudes, *depths, *ids, *areas, *reffs)
 
+        mmto.tree_map(trees, mu_list, latitudes, longitudes, depths, ids, areas, reffs)
 
 
 if __name__ == "__main__":
