@@ -1,8 +1,10 @@
-MMTO
-==============
+# MMTO
 
-Multi-dimensional faint object detection
+Multi-spectral source detection tool
 
+[![DOI](https://img.shields.io/badge/DOI-10.1515/ACCESS-892492.svg)](https://doi.org/10.1109/ACCESS.2024.3403309)
+[![Higra](https://img.shields.io/badge/Powered%20by-Higra-ffff00.svg)](https://higra.readthedocs.io/)
+[![Astropy](https://img.shields.io/badge/powered%20by-Astropy-D84315.svg)](https://www.astropy.org/)
 
 Installation
 ------------
