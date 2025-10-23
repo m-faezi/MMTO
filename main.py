@@ -4,7 +4,6 @@ from mto2lib.dark_frame import DarkFrame
 from mto2lib.run import Run
 from mto2lib.max_tree import MaxTree
 from mto2lib.extractor import Extractor
-from mto2lib.utils import base_utils as uts
 
 import os
 import glob
@@ -62,28 +61,8 @@ def mmto_run():
             segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
             label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
             label_data[segment_ids] = np.arange(len(segment_ids))
-            # seg_array = hg.reconstruct_leaf_data(tree_of_segments, label_data)
-            #
-            # coords_per_segment = [[] for _ in range(len(segment_ids))]
-            #
-            # for y_ in range(seg_array.shape[0]):
-            #
-            #    for x_ in range(seg_array.shape[1]):
-            #
-            #        label = seg_array[y_, x_]
-            #
-            #        if label >= 0:
-            #            coords_per_segment[label].append((y_, x_))
-            #
-            # r_eff = [uts.half_light_radius(image.image, coords) for coords in coords_per_segment]
-
-            # centroids = [uts.weighted_centroid_coords_from_segments(image.image, coords) for coords in coords_per_segment]
-
-            # y = [cen[0] for cen in centroids]
-            # x = [cen[1] for cen in centroids]
 
             flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
-
 
             trees.append(extractor.maxtree_of_segment)
             latitudes.append(maxtree.x[extractor.segment_node_map])
