@@ -160,7 +160,7 @@ namespace hg {
             for (index_t i = 0; i < ntrees; i++) {
                 for (index_t n: leaves_to_root_iterator(trees[i], leaves_it::include, root_it::exclude)) {
                     auto represent_n = node_maps[i](n);
-                    
+
                     // APPLY FILTER ONLY HERE - check both nodes have valid segment IDs
                     if (ids[i][n] == -1) {
                         continue;
