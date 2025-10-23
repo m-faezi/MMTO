@@ -1,9 +1,9 @@
-from image import Image
-from dark_frame import DarkFrame
+from mto2lib.image import Image
+from mto2lib.dark_frame import DarkFrame
 
-from run import Run
-from max_tree import MaxTree
-from extractor import Extractor
+from mto2lib.run import Run
+from mto2lib.max_tree import MaxTree
+from mto2lib.extractor import Extractor
 from mto2lib.utils import base_utils as uts
 
 import os
@@ -23,7 +23,7 @@ def mmto_run():
 
         run.setup_args()
 
-        for fit_file in glob.glob(os.path.join('./data', '*.fits')):
+        for fit_file in glob.glob(os.path.join('data', '*.fits')):
 
             run.arguments.file_path = fit_file
             image = Image()
@@ -64,7 +64,7 @@ def mmto_run():
             label_data[segment_ids] = np.arange(len(segment_ids))
             # seg_array = hg.reconstruct_leaf_data(tree_of_segments, label_data)
             #
-            coords_per_segment = [[] for _ in range(len(segment_ids))]
+            # coords_per_segment = [[] for _ in range(len(segment_ids))]
             #
             # for y_ in range(seg_array.shape[0]):
             #
