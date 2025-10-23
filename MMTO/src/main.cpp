@@ -160,6 +160,12 @@ namespace hg {
             for (index_t i = 0; i < ntrees; i++) {
                 for (index_t n: leaves_to_root_iterator(trees[i], leaves_it::include, root_it::exclude)) {
                     auto represent_n = node_maps[i](n);
+                    
+                    // APPLY FILTER ONLY HERE - check both nodes have valid segment IDs
+                    if (ids[i][n] == -1) {
+                        continue;
+                    }
+
                     adj_lists[node_maps[i](parent(n, trees[i]))].push_back(represent_n);
 
                     for (index_t j = 0; j < ntrees; j++) {
@@ -167,6 +173,11 @@ namespace hg {
 
                         trees[j].compute_children();
                         auto ses_ij_n = ses(i, j)(n);
+
+                        // APPLY FILTER ONLY HERE - check both nodes have valid segment IDs
+                        if (ids[j][ses_ij_n] == -1) {
+                            continue;
+                        }
 
                         double xi_val = xs[i][n];
                         double xj_val = xs[j][ses_ij_n];
