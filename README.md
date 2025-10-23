@@ -2,7 +2,7 @@
 
 Multi-spectral source detection tool
 
-[![DOI](https://img.shields.io/badge/DOI-10.1515/ACCESS-27cff5.svg)](https://doi.org/10.1109/ACCESS.2024.3403309)
+[![DOI](https://img.shields.io/badge/DOI-10.1515/ACCESS-000.svg)](https://doi.org/10.1109/ACCESS.2024.3403309)
 [![Higra](https://img.shields.io/badge/Powered%20by-Higra-c98a22.svg)](https://higra.readthedocs.io/)
 [![Astropy](https://img.shields.io/badge/powered%20by-Astropy-D84315.svg)](https://www.astropy.org/)
 
