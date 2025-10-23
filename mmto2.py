@@ -14,7 +14,7 @@ import mmto
 
 
 """Example program - using original settings"""
-trees, latitudes, longitudes, mu_list, graphs, depths, ids, areas, reffs = [], [], [], [], [], [], [], [], []
+trees, latitudes, longitudes, fluxes, volumes, gammas, areas, ids = [], [], [], [], [], [], [], []
 
 
 def mmto_run():
@@ -61,21 +61,21 @@ def mmto_run():
             tree_of_segments = extractor.maxtree_of_segment
             segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
             label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
-            label_data[segment_ids] = np.arange(len(segment_ids))
-            seg_array = hg.reconstruct_leaf_data(tree_of_segments, label_data)
-
+            #label_data[segment_ids] = np.arange(len(segment_ids))
+            #seg_array = hg.reconstruct_leaf_data(tree_of_segments, label_data)
+#
             coords_per_segment = [[] for _ in range(len(segment_ids))]
-
-            for y_ in range(seg_array.shape[0]):
-
-                for x_ in range(seg_array.shape[1]):
-
-                    label = seg_array[y_, x_]
-
-                    if label >= 0:
-                        coords_per_segment[label].append((y_, x_))
-
-            r_eff = [uts.half_light_radius(image.image, coords) for coords in coords_per_segment]
+#
+            #for y_ in range(seg_array.shape[0]):
+#
+            #    for x_ in range(seg_array.shape[1]):
+#
+            #        label = seg_array[y_, x_]
+#
+            #        if label >= 0:
+            #            coords_per_segment[label].append((y_, x_))
+#
+            #r_eff = [uts.half_light_radius(image.image, coords) for coords in coords_per_segment]
 
             centroids = [uts.weighted_centroid_coords_from_segments(image.image, coords) for coords in coords_per_segment]
 
@@ -86,16 +86,16 @@ def mmto_run():
 
 
             trees.append(extractor.maxtree_of_segment)
-            latitudes.append(x[::-1])
-            longitudes.append(y[::-1])
-            mu_list.append(flux[tree_of_segments.num_leaves():][::-1])
-            depths.append(maxtree.gamma[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
-            ids.append(extractor.ids[tree_of_segments.num_leaves():][::-1])
-            areas.append(maxtree.area[extractor.segment_node_map][tree_of_segments.num_leaves():][::-1])
-            reffs.append(r_eff[tree_of_segments.num_leaves():][::-1])
+            latitudes.append(maxtree.x[extractor.segment_node_map])
+            longitudes.append(maxtree.y[extractor.segment_node_map])
+            fluxes.append(flux)
+            gammas.append(maxtree.gamma[extractor.segment_node_map])
+            ids.append(label_data)
+            areas.append(maxtree.area[extractor.segment_node_map])
+            volumes.append(maxtree.volume[extractor.segment_node_map])
 
 
-        mmto.tree_map(trees, mu_list, latitudes, longitudes, depths, ids, areas, reffs)
+        mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids)
 
 
 if __name__ == "__main__":

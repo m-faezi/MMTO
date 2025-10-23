@@ -90,13 +90,13 @@ namespace hg {
 
         auto tree_map(
             const std::vector<hg::tree> & trees,
-            const std::vector<xt::pyarray<double>> & mus,
             const std::vector<xt::pyarray<double>> & xs,
             const std::vector<xt::pyarray<double>> & ys,
-            const std::vector<xt::pyarray<double>> & ds,
+            const std::vector<xt::pyarray<double>> & fluxes,
+            const std::vector<xt::pyarray<double>> & gammas,
             const std::vector<xt::pyarray<double>> & as,
-            const std::vector<xt::pyarray<double>> & norm_areas,
-            const std::vector<xt::pyarray<double>> & moments
+            const std::vector<xt::pyarray<double>> & volumes,
+            const std::vector<xt::pyarray<double>> & ids
         ) {
 
             auto ntrees = trees.size();
@@ -158,7 +158,7 @@ namespace hg {
             int match_count = 0;
 
             for (index_t i = 0; i < ntrees; i++) {
-                for (index_t n: leaves_to_root_iterator(trees[i], leaves_it::exclude, root_it::exclude)) {
+                for (index_t n: leaves_to_root_iterator(trees[i], leaves_it::include, root_it::exclude)) {
                     auto represent_n = node_maps[i](n);
                     adj_lists[node_maps[i](parent(n, trees[i]))].push_back(represent_n);
 
@@ -180,34 +180,37 @@ namespace hg {
 
                         if (dist < 3) {
 
-                            double area_i_val = norm_areas[i][n];
-                            double moment_i_val = moments[i][n];
-                            double mu_i_val = mus[i][n];
+                            double area_i_val = as[i][n];
+                            double volume_i_val = volumes[i][n];
+                            double flux_i_val = fluxes[i][n];
 
-                            double area_j_val = norm_areas[j][ses_ij_n];
-                            double moment_j_val = moments[j][ses_ij_n];
-                            double mu_j_val = mus[j][ses_ij_n];
+                            double area_j_val = as[j][ses_ij_n];
+                            double volume_j_val = volumes[j][ses_ij_n];
+                            double flux_j_val = fluxes[j][ses_ij_n];
 
                             double X[] = {
                                 area_i_val,
-                                moment_i_val,
-                                mu_i_val,
-                                mu_i_val / area_i_val
+                                volume_i_val,
+                                flux_i_val,
+                                flux_i_val / area_i_val
                             };
                             double Y[] = {
                                 area_j_val,
-                                moment_j_val,
-                                mu_j_val,
-                                mu_j_val / area_j_val
+                                volume_j_val,
+                                flux_j_val,
+                                flux_j_val / area_j_val
                             };
 
                             double cos_sim = cosine_similarity(X, Y, 4);
 
+                            double n_id = ids[i][n];
+                            double m_id = ids[j][ses_ij_n];
+
                             if (cos_sim > 0.93) {
                                 // Add row to CSV
-                                csv_content << i << "," << n << ","
-                                           << j << "," << ses_ij_n << ","
-                                           << mu_i_val << "," << mu_j_val << ","
+                                csv_content << i << "," << n_id << ","
+                                           << j << "," << m_id << ","
+                                           << flux_i_val << "," << flux_j_val << ","
                                            << cos_sim << "," << dist << "\n";
                                 match_count++;
                             }
