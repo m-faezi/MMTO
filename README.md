@@ -23,5 +23,5 @@ pip install ./MMTO
 ---
 
 <p align="center">
-    <img src="./assets/MMTO-pipeline.svg" alt="drawing" width="54.5%">
+    <img src="./assets/MMTO-pipeline.svg" alt="drawing" width="69.3%">
 </p>
