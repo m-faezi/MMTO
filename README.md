@@ -11,7 +11,7 @@ Installation
 
 **Requires a C++ 14 compiler and cmake**
 
-
+---
 ```bash
 python -m venv mmto
 source mmto/bin/activate
@@ -20,4 +20,8 @@ pip install -r ./requirements/requirements_torch.txt || pip install -r ./require
 pip install -U pip setuptools wheel scikit-build cmake ninja
 pip install ./MMTO
 ```
+---
 
+<p align="center">
+    <img src="./assets/MMTO-pipeline.svg" alt="drawing" width="54.5%">
+</p>
