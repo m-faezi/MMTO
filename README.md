@@ -6,12 +6,10 @@ Multi-spectral source detection tool
 [![Higra](https://img.shields.io/badge/Powered%20by-Higra-000.svg)](https://higra.readthedocs.io/)
 [![Astropy](https://img.shields.io/badge/powered%20by-Astropy-000.svg)](https://www.astropy.org/)
 
-Installation
-------------
+## Installation
 
 **Requires a C++ 14 compiler and cmake**
 
----
 ```bash
 python -m venv mmto
 source mmto/bin/activate
@@ -20,7 +18,6 @@ pip install -r ./requirements/requirements_torch.txt || pip install -r ./require
 pip install -U pip setuptools wheel scikit-build cmake ninja
 pip install ./MMTO
 ```
----
 
 <p align="center">
     <img src="./assets/MMTO-pipeline.svg" alt="MMTO-pipeline" width="93.6%">
