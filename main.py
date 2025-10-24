@@ -19,7 +19,6 @@ trees, latitudes, longitudes, fluxes, volumes, gammas, areas, ids, tree_ids = []
 def mmto_run():
 
     run = Run()
-
     run.setup_args()
 
     for fit_file in glob.glob(os.path.join('data', '*.fits')):
@@ -77,7 +76,7 @@ def mmto_run():
         areas.append(maxtree.area[extractor.segment_node_map])
         volumes.append(maxtree.volume[extractor.segment_node_map])
 
-    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids)
+    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids, run.arguments.time_stamp)
 
 
 if __name__ == "__main__":

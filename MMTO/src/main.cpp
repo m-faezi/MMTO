@@ -97,7 +97,8 @@ namespace hg {
             const std::vector<xt::pyarray<double>> & as,
             const std::vector<xt::pyarray<double>> & volumes,
             const std::vector<xt::pyarray<double>> & ids,
-            const std::vector<std::string> & tree_ids
+            const std::vector<std::string> & tree_ids,
+            const std::string & timestamp
         ) {
 
             auto ntrees = trees.size();
@@ -232,14 +233,16 @@ namespace hg {
             }
 
             // Write CSV to file
-            std::ofstream csv_file("./results/detection_colors.csv");
+            std::string timestamp_dir = "./results/" + timestamp + "/";
+            std::string csv_file_path = timestamp_dir + "detection_correlation.csv";
+            std::ofstream csv_file(csv_file_path);
 
             if (csv_file.is_open()) {
                 csv_file << csv_content.str();
                 csv_file.close();
-                std::cout << "CSV file 'object_matches.csv' created with " << match_count << " matches." << std::endl;
+                std::cout << "CSV file '" << csv_file_path << "' created with " << match_count << " matches." << std::endl;
             } else {
-                std::cerr << "Error: Could not create CSV file." << std::endl;
+                std::cerr << "Error: Could not create CSV file at: " << csv_file_path << std::endl;
             }
 
             return csv_content.str();
