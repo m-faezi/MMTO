@@ -8,13 +8,14 @@ class Extractor:
         self.segment_node_map = None
         self.ids = None
 
-    def create_segmentation(self, tree, image, run):
+    def create_segmentation(self, tree, image, run, tree_id):
 
         self.maxtree_of_segment, self.segment_node_map, self.ids = segment.get_segmentation_map(
             tree.tree_structure,
             tree.corrected_segments,
             image.header,
-            run.arguments
+            run.arguments,
+            tree_id
         )
 
         return self

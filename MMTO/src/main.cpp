@@ -96,7 +96,8 @@ namespace hg {
             const std::vector<xt::pyarray<double>> & gammas,
             const std::vector<xt::pyarray<double>> & as,
             const std::vector<xt::pyarray<double>> & volumes,
-            const std::vector<xt::pyarray<double>> & ids
+            const std::vector<xt::pyarray<double>> & ids,
+            const std::vector<std::string> & tree_ids
         ) {
 
             auto ntrees = trees.size();
@@ -218,9 +219,8 @@ namespace hg {
                             double m_id = ids[j][ses_ij_n];
 
                             if (cos_sim > 0.93) {
-                                // Add row to CSV
-                                csv_content << i << "," << n_id << ","
-                                           << j << "," << m_id << ","
+                                csv_content << tree_ids[i] << "," << n_id << ","
+                                           << tree_ids[j] << "," << m_id << ","
                                            << flux_i_val << "," << flux_j_val << ","
                                            << cos_sim << "," << dist << "\n";
                                 match_count++;

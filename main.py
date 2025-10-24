@@ -10,71 +10,73 @@ import glob
 import higra as hg
 import numpy as np
 import mmto
+import uuid
 
 
-"""Example program - using original settings"""
-trees, latitudes, longitudes, fluxes, volumes, gammas, areas, ids = [], [], [], [], [], [], [], []
+trees, latitudes, longitudes, fluxes, volumes, gammas, areas, ids, tree_ids = [], [], [], [], [], [], [], [], []
 
 
 def mmto_run():
 
-        run = Run()
+    run = Run()
 
-        run.setup_args()
+    run.setup_args()
 
-        for fit_file in glob.glob(os.path.join('data', '*.fits')):
+    for fit_file in glob.glob(os.path.join('data', '*.fits')):
 
-            run.arguments.file_path = fit_file
-            image = Image()
-            dark_frame = DarkFrame()
+        tree_id = str(uuid.uuid4())[:8]
+        tree_ids.append(tree_id)
 
-            image.get_image(run)
-            image.preprocess_image(run.arguments.s_sigma)
+        run.arguments.file_path = fit_file
+        image = Image()
+        dark_frame = DarkFrame()
 
-            try:
+        image.get_image(run)
+        image.preprocess_image(run.arguments.s_sigma)
 
-                dark_frame.estimate_const_bg(image.smooth_image)
-                dark_frame.create_reduced_image(image, run.results_dir)
+        try:
 
-                maxtree = MaxTree()
-                maxtree.construct_max_tree(image.reduced_image)
-                maxtree.compute_attributes(run, image)
+            dark_frame.estimate_const_bg(image.smooth_image)
+            dark_frame.create_reduced_image(image, run.results_dir)
 
-            except Exception as e:
+            maxtree = MaxTree()
+            maxtree.construct_max_tree(image.reduced_image)
+            maxtree.compute_attributes(run, image)
 
-                run.arguments.background_mode = 'morph'
+        except Exception as e:
 
-                print(f"Note: Background mode switched from 'const' to '{run.arguments.background_mode}'!")
+            run.arguments.background_mode = 'morph'
 
-                maxtree = MaxTree()
-                maxtree.construct_max_tree(image.smooth_image)
-                maxtree.compute_attributes(run, image)
-                dark_frame.estimate_morph_bg(image, maxtree)
+            print(f"Note: Background mode switched from 'const' to '{run.arguments.background_mode}'!")
 
-            maxtree.detect_significant_objects(dark_frame)
-            maxtree.move_up(dark_frame, run)
+            maxtree = MaxTree()
+            maxtree.construct_max_tree(image.smooth_image)
+            maxtree.compute_attributes(run, image)
+            dark_frame.estimate_morph_bg(image, maxtree)
 
-            extractor = Extractor()
-            extractor.create_segmentation(maxtree, image, run)
+        maxtree.detect_significant_objects(dark_frame)
+        maxtree.move_up(dark_frame, run)
 
-            tree_of_segments = extractor.maxtree_of_segment
-            segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
-            label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
-            label_data[segment_ids] = np.arange(len(segment_ids))
+        extractor = Extractor()
+        extractor.create_segmentation(maxtree, image, run, tree_id)
 
-            flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
+        tree_of_segments = extractor.maxtree_of_segment
+        segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
+        label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
+        label_data[segment_ids] = np.arange(len(segment_ids))
 
-            trees.append(extractor.maxtree_of_segment)
-            latitudes.append(maxtree.x[extractor.segment_node_map])
-            longitudes.append(maxtree.y[extractor.segment_node_map])
-            fluxes.append(flux)
-            gammas.append(maxtree.gamma[extractor.segment_node_map])
-            ids.append(label_data)
-            areas.append(maxtree.area[extractor.segment_node_map])
-            volumes.append(maxtree.volume[extractor.segment_node_map])
+        flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
 
+        trees.append(extractor.maxtree_of_segment)
+        latitudes.append(maxtree.x[extractor.segment_node_map])
+        longitudes.append(maxtree.y[extractor.segment_node_map])
+        fluxes.append(flux)
+        gammas.append(maxtree.gamma[extractor.segment_node_map])
+        ids.append(label_data)
+        areas.append(maxtree.area[extractor.segment_node_map])
+        volumes.append(maxtree.volume[extractor.segment_node_map])
 
-        mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids)
+    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids)
 
 
 if __name__ == "__main__":
