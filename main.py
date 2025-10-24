@@ -31,7 +31,7 @@ def mmto_run():
         image = Image()
         dark_frame = DarkFrame()
 
-        image.get_image(run)
+        image.get_image(run.arguments)
         image.preprocess_image(run.arguments.s_sigma)
 
         try:

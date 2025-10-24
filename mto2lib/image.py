@@ -2,6 +2,7 @@ from mto2lib import validators, preprocessing
 import mto2lib.main as mto2
 from mto2lib.utils import io_utils
 
+
 class Image:
 
     def __init__(self):
@@ -10,9 +11,9 @@ class Image:
         self.reduced_image = None
         self.header = None
 
-    def get_image(self, run):
+    def get_image(self, arguments):
 
-        self.image, self.header = mto2.get_image(run.arguments, run.results_dir)
+        self.image, self.header = io_utils.read_image_data(arguments.file_path)
 
         return self
 
