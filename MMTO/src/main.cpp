@@ -154,7 +154,8 @@ namespace hg {
             }
 
             std::stringstream csv_content;
-            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,flux_i,flux_j,cosine_similarity,distance\n";
+            //csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,flux_i,flux_j,cosine_similarity,distance\n";
+            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,cosine_similarity,distance\n";
 
             int match_count = 0;
 
@@ -221,7 +222,7 @@ namespace hg {
                             if (cos_sim > 0.93) {
                                 csv_content << tree_ids[i] << "," << n_id << ","
                                            << tree_ids[j] << "," << m_id << ","
-                                           << flux_i_val << "," << flux_j_val << ","
+                                           //<< flux_i_val << "," << flux_j_val << ","
                                            << cos_sim << "," << dist << "\n";
                                 match_count++;
                             }
@@ -231,7 +232,7 @@ namespace hg {
             }
 
             // Write CSV to file
-            std::ofstream csv_file("detection_colors.csv");
+            std::ofstream csv_file("./results/detection_colors.csv");
 
             if (csv_file.is_open()) {
                 csv_file << csv_content.str();
