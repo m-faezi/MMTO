@@ -4,12 +4,12 @@ import os
 import pandas as pd
 
 
-def save_run_metadata(run):
+def save_run_metadata(run, tree_id):
 
     metadata = {
-        "software": "MTO2",
+        "software": "MMTO",
         "version": "1.0.0",
-        "time_stamp": run.arguments.time_stamp,
+        "time_stamp": run.time_stamp,
         "file_name": os.path.splitext(os.path.basename(run.arguments.file_path))[0],
         "arguments": {
             "background_mode": run.arguments.background_mode,
@@ -17,11 +17,11 @@ def save_run_metadata(run):
             "area_ratio": run.arguments.area_ratio,
             "s_sigma": run.arguments.s_sigma,
             "G_fit": run.arguments.G_fit,
-            "crop": run.arguments.crop
+            #"crop": run.arguments.crop
         }
     }
 
-    metadata_file = os.path.join(run.results_dir, "run_metadata.json")
+    metadata_file = os.path.join(run.results_dir, str(tree_id)+"_metadata.json")
 
     with open(metadata_file, 'w') as f:
 
@@ -29,7 +29,7 @@ def save_run_metadata(run):
 
     print(f"Saved argument metadata to: {metadata_file}")
 
-    save_run_record(run)
+    # save_run_record(run)
 
     return metadata_file
 
@@ -39,14 +39,14 @@ def save_run_record(run):
     run_csv_path = os.path.join("./results", "your_runs.csv")
 
     run_record = {
-        "run_id": run.arguments.time_stamp,
+        "run_id": run.time_stamp,
         "file_name": os.path.splitext(os.path.basename(run.arguments.file_path))[0],
         "background_mode": run.arguments.background_mode,
         "move_factor": run.arguments.move_factor,
         "area_ratio": run.arguments.area_ratio,
         "s_sigma": run.arguments.s_sigma,
         "G_fit": run.arguments.G_fit,
-        "crop": run.arguments.crop,
+        #"crop": run.arguments.crop,
         "status": run.status,
     }
 
@@ -55,9 +55,9 @@ def save_run_record(run):
         try:
             existing_df = pd.read_csv(run_csv_path)
 
-            if run.arguments.time_stamp in existing_df['run_id'].values:
+            if run.time_stamp in existing_df['run_id'].values:
 
-                existing_df.loc[existing_df['run_id'] == run.arguments.time_stamp, 'status'] = run.status
+                existing_df.loc[existing_df['run_id'] == run.time_stamp, 'status'] = run.status
                 updated_df = existing_df
 
             else:

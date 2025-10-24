@@ -15,4 +15,5 @@ mmto/
 *.csv
 *.fits
 venvs/
+results/
 

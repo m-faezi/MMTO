@@ -14,7 +14,7 @@ class Extractor:
             tree.tree_structure,
             tree.corrected_segments,
             image.header,
-            run.arguments,
+            run,
             tree_id
         )
 
@@ -30,7 +30,7 @@ class Extractor:
             maxtree.parent_altitude,
             maxtree.area,
             extractor.ids,
-            run.arguments,
+            run,
             tree_id
         )
 

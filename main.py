@@ -1,3 +1,4 @@
+import mto2lib.utils.io_utils
 from mto2lib.image import Image
 from mto2lib.dark_frame import DarkFrame
 
@@ -76,7 +77,9 @@ def mmto_run():
         areas.append(maxtree.area[extractor.segment_node_map])
         volumes.append(maxtree.volume[extractor.segment_node_map])
 
-    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids, run.arguments.time_stamp)
+        mto2lib.utils.io_utils.save_run_metadata(run, tree_id)
+
+    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids, run.time_stamp)
 
 
 if __name__ == "__main__":
