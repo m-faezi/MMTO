@@ -59,6 +59,7 @@ def mmto_run():
 
         extractor = Extractor()
         extractor.create_segmentation(maxtree, image, run, tree_id)
+        extractor.extract_parameters(extractor, maxtree, run, image, tree_id)
 
         tree_of_segments = extractor.maxtree_of_segment
         segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())

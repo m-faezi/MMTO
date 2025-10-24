@@ -20,7 +20,7 @@ class Extractor:
 
         return self
 
-    def extract_parameters(self, extractor, maxtree, run, image):
+    def extract_parameters(self, extractor, maxtree, run, image, tree_id):
 
         parameter_extraction.extract_parameters(
             image.image,
@@ -31,6 +31,7 @@ class Extractor:
             maxtree.area,
             extractor.ids,
             run.arguments,
+            tree_id
         )
 
         return self

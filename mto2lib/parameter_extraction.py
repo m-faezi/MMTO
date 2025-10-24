@@ -13,6 +13,7 @@ def extract_parameters(
         area,
         unique_segment_ids,
         arguments,
+        tree_id
 ):
 
     print("Extracting parameters...")
@@ -48,7 +49,7 @@ def extract_parameters(
     flux = hg.accumulate_sequential(tree_of_segments, image, hg.Accumulators.sum)
 
     results_dir = os.path.join("./results", arguments.time_stamp)
-    output_csv = os.path.join(results_dir, "parameters.csv")
+    output_csv = os.path.join(results_dir, str(tree_id)+".csv")
 
     uts.save_parameters(
         unique_segment_ids[tree_of_segments.num_leaves():][::-1],
