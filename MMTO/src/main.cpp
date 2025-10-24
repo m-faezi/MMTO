@@ -163,7 +163,7 @@ namespace hg {
                     auto represent_n = node_maps[i](n);
 
                     // APPLY FILTER ONLY HERE - check both nodes have valid segment IDs
-                    if (ids[i][n] == -1) {
+                    if (ids[i][n] <= 0) {
                         continue;
                     }
 
@@ -176,7 +176,7 @@ namespace hg {
                         auto ses_ij_n = ses(i, j)(n);
 
                         // APPLY FILTER ONLY HERE - check both nodes have valid segment IDs
-                        if (ids[j][ses_ij_n] == -1) {
+                        if (ids[j][ses_ij_n] <= 0) {
                             continue;
                         }
 
