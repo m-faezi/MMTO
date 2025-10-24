@@ -1,5 +1,4 @@
 from mto2lib import validators, preprocessing
-import mto2lib.main as mto2
 from mto2lib.utils import io_utils
 
 
