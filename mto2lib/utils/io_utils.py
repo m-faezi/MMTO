@@ -7,7 +7,7 @@ import pandas as pd
 def save_run_metadata(run, tree_id):
 
     metadata = {
-        "software": "MMTO",
+        "software": "mmtolib",
         "version": "1.0.0",
         "time_stamp": run.time_stamp,
         "file_name": os.path.splitext(os.path.basename(run.arguments.file_path))[0],

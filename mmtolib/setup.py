@@ -70,8 +70,8 @@ class CMakeBuild(build_ext):
 setup(
     name='mmto',
     author='Mohammad Faezi',
-    version='0.0.1',
-    description='An example higra extension',
+    version='1.0.0',
+    description='Multi-spectral source detection',
     long_description=open('../README.md').read(),
     ext_modules=[CMakeExtension('mmto')],
     cmdclass=dict(build_ext=CMakeBuild),

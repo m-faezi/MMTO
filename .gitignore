@@ -2,7 +2,7 @@
 *.egg-info/
 .ipynb_checkpoints/
 MMTO/dist/
-MMTO/build/
+mmtolib/build/
 MMTO/mmto/
 mmto/
 *.py[cod]
