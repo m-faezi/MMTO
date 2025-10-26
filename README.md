@@ -27,9 +27,24 @@ pip install -U pip setuptools wheel scikit-build cmake ninja
 pip install ./mmtolib
 ```
 
+### Overview
+MMTO extends multiple max-trees by integrating semantically meaningful node partitions, derived from statistical tests, into a structured graph. This integration enables the exploration of correlations among cross-band emissions, enhancing segmentation accuracy.
 <p align="center">
     <img src="./assets/MMTO-pipeline.svg" alt="MMTO-pipeline" width="93.6%">
 </p>
+
+### Tuned run
+```bash
+python main.py --co_sim 0.9 --pix_dist 3.0 
+```
+
+### Command line arguments
+
+| Option              | Description                                 | Type      | Default                    | Range/Values |
+|---------------------|---------------------------------------------|-----------|----------------------------|--------------|
+| `--pix_dist`        | Cross-band central distance (pixel)         | float     | 0.00                       | ≥ 0          |
+| `--co_sim`          | Cross-band cosine similarity threshold      | float     | 0.90                       | [0.0, 1.0)   |
+| `-h`, `--help`      | Show the help message and exit              | flag      | -                          | -            |
 
 
 ## Bibliography
