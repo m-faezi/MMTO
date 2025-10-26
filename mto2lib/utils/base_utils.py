@@ -295,3 +295,17 @@ def second_order_moments(tree, size, image):
 
     return major_axis, minor_axis, theta
 
+
+def normalize(data, axis=0, epsilon=1e-8):
+
+    data = np.array(data, dtype=float)
+    data_min = np.min(data, axis=axis, keepdims=True)
+    data_max = np.max(data, axis=axis, keepdims=True)
+
+    range_ = data_max - data_min
+    range_[range_ == 0] = epsilon
+
+    normalized = (data - data_min) / range_
+
+    return normalized
+

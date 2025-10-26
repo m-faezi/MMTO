@@ -7,7 +7,7 @@ import higra as hg
 import numpy as np
 import mmto
 import uuid
-from mto2lib.utils import io_utils
+from mto2lib.utils import io_utils, base_utils
 import sys
 
 
@@ -77,11 +77,11 @@ def mmto_run():
             trees.append(extractor.maxtree_of_segment)
             latitudes.append(maxtree.x[extractor.segment_node_map])
             longitudes.append(maxtree.y[extractor.segment_node_map])
-            fluxes.append(flux)
+            fluxes.append(base_utils.normalize(flux))
             gammas.append(maxtree.gamma[extractor.segment_node_map])
             ids.append(label_data)
-            areas.append(maxtree.area[extractor.segment_node_map])
-            volumes.append(maxtree.volume[extractor.segment_node_map])
+            areas.append(base_utils.normalize(maxtree.area[extractor.segment_node_map]))
+            volumes.append(base_utils.normalize(maxtree.volume[extractor.segment_node_map]))
 
             run.status = "Completed"
             io_utils.save_run_metadata(run, band_args, _id)
