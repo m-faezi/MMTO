@@ -82,7 +82,20 @@ def mmto_run():
 
         mto2lib.utils.io_utils.save_run_metadata(run, band_args, tree_id)
 
-    mmto.tree_map(trees, latitudes, longitudes, fluxes, gammas, areas, volumes, ids, tree_ids, run.time_stamp)
+    mmto.tree_map(
+        trees,
+        latitudes,
+        longitudes,
+        fluxes,
+        gammas,
+        areas,
+        volumes,
+        ids,
+        tree_ids,
+        run.time_stamp,
+        run.arguments.co_sim,
+        run.arguments.pix_dist,
+    )
 
 
 if __name__ == "__main__":

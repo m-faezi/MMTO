@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import yaml
+from mto2lib.parser import make_parser
 
 
 class Run:
@@ -16,6 +17,7 @@ class Run:
     def setup_args(self):
 
         self.status = "Running"
+        self.arguments = make_parser().parse_args()
         self.time_stamp = datetime.now().isoformat()
         self.results_dir = os.path.join("./results", self.time_stamp)
 

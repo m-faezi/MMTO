@@ -12,6 +12,10 @@ def save_run_metadata(run, band_args, tree_id):
         "time_stamp": run.time_stamp,
         "file_name": band_args['file_path'],
         "arguments": {
+            "pix_dist": run.arguments.pix_dist,
+            "co_sim": run.arguments.co_sim,
+        },
+        "band_config": {
             "background_mode": band_args['background_mode'],
             "move_factor": band_args['move_factor'],
             "area_ratio": band_args['area_ratio'],

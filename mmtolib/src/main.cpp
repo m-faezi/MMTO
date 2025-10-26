@@ -98,7 +98,9 @@ namespace hg {
             const std::vector<xt::pyarray<double>> & volumes,
             const std::vector<xt::pyarray<double>> & ids,
             const std::vector<std::string> & tree_ids,
-            const std::string & timestamp
+            const std::string & timestamp,
+            const double co_sim,
+            const double pix_dist
         ) {
 
             auto ntrees = trees.size();
@@ -192,7 +194,7 @@ namespace hg {
                             (yi_val - yj_val) * (yi_val - yj_val)
                         );
 
-                        if (dist < 3) {
+                        if (dist <= pix_dist) {
 
                             double area_i_val = as[i][n];
                             double volume_i_val = volumes[i][n];
@@ -220,7 +222,7 @@ namespace hg {
                             double n_id = ids[i][n];
                             double m_id = ids[j][ses_ij_n];
 
-                            if (cos_sim > 0.93) {
+                            if (cos_sim >= co_sim) {
                                 csv_content << tree_ids[i] << "," << n_id << ","
                                            << tree_ids[j] << "," << m_id << ","
                                            //<< flux_i_val << "," << flux_j_val << ","
