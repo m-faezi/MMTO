@@ -42,13 +42,5 @@ def make_parser():
         help='Applies morphological Gaussian filter'
     )
 
-    parser.add_argument(
-        '--time_stamp',
-        action='store_false',
-        default=None,
-        help='TimeStamp directory to save output files'
-    )
-
-
     return parser
 
