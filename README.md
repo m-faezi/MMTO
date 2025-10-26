@@ -14,6 +14,10 @@ MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and c
 
 ## Installation
 
+### Dependencies
+
+The dependencies are listed in the [./requirements](requirements) directory.
+
 ```bash
 python -m venv mmto
 source mmto/bin/activate
