@@ -8,8 +8,6 @@ Multi-spectral source detection tool
 
 ## Installation
 
-**Requires a C++ 14 compiler and cmake**
-
 ```bash
 python -m venv mmto
 source mmto/bin/activate
