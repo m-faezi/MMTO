@@ -33,7 +33,7 @@ def save_run_metadata(run, band_args, tree_id):
 
     print(f"Saved argument metadata to: {metadata_file}")
 
-    # save_run_record(run)
+    save_run_record(run)
 
     return metadata_file
 
@@ -44,12 +44,8 @@ def save_run_record(run):
 
     run_record = {
         "run_id": run.time_stamp,
-        "file_name": os.path.splitext(os.path.basename(run.arguments.file_path))[0],
-        "background_mode": run.arguments.background_mode,
-        "move_factor": run.arguments.move_factor,
-        "area_ratio": run.arguments.area_ratio,
-        "s_sigma": run.arguments.s_sigma,
-        "G_fit": run.arguments.G_fit,
+        "co_sim": run.arguments.co_sim,
+        "pix_dist": run.arguments.pix_dist,
         #"crop": run.arguments.crop,
         "status": run.status,
     }
