@@ -22,10 +22,8 @@ def mmto_run():
     for band_name, band_args in run.config['bands'].items():
 
         print(f"Processing band: {band_name}")
-
+        _id = str(uuid.uuid4())[:8]
         fit_file = band_args['file_path']
-        tree_id = str(uuid.uuid4())[:8]
-        tree_ids.append(tree_id)
 
         try:
 
@@ -60,12 +58,14 @@ def mmto_run():
                 maxtree.compute_attributes(band_args, image)
                 dark_frame.estimate_morph_bg(image, maxtree)
 
+            tree_ids.append(_id)
+
             maxtree.detect_significant_objects(dark_frame)
             maxtree.move_up(dark_frame, band_args)
 
             extractor = Extractor()
-            extractor.create_segmentation(maxtree, image, run, tree_id)
-            extractor.extract_parameters(extractor, maxtree, run, image, tree_id)
+            extractor.create_segmentation(maxtree, image, run, _id)
+            extractor.extract_parameters(extractor, maxtree, run, image, _id)
 
             tree_of_segments = extractor.maxtree_of_segment
             segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
@@ -84,12 +84,12 @@ def mmto_run():
             volumes.append(maxtree.volume[extractor.segment_node_map])
 
             run.status = "Completed"
-            io_utils.save_run_metadata(run, band_args, tree_id)
+            io_utils.save_run_metadata(run, band_args, _id)
 
         except KeyboardInterrupt:
 
             run.status = "Interrupted"
-            io_utils.save_run_metadata(run, band_args, tree_id)
+            io_utils.save_run_metadata(run, band_args, _id)
 
             print("\nMTO2 run interrupted by user!")
             sys.exit(1)
@@ -97,7 +97,7 @@ def mmto_run():
         except Exception as e:
 
             run.status = "Terminated"
-            io_utils.save_run_metadata(run, band_args, tree_id)
+            io_utils.save_run_metadata(run, band_args, _id)
 
             print(f"\nMTO2 run terminated with error: {e}")
 
