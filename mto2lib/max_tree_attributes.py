@@ -3,7 +3,7 @@ import numpy as np
 import higra as hg
 
 
-def compute_attributes(tree_structure, altitudes, run, image):
+def compute_attributes(tree_structure, altitudes, band_args, image):
 
     x, y = uts.centroid(tree_structure, image.image.shape[:2])
     distances = np.sqrt((x[tree_structure.parents()] - x) ** 2 + (y[tree_structure.parents()] - y) ** 2)
@@ -13,7 +13,7 @@ def compute_attributes(tree_structure, altitudes, run, image):
     parent_area = area[tree_structure.parents()]
     parent_altitude = altitudes[tree_structure.parents()]
 
-    if run.arguments.G_fit or run.arguments.background_mode == 'morph':
+    if band_args['G_fit'] or band_args['background_mode'] == 'morph':
 
         gaussian_intensities = uts.compute_gaussian_profile(
             variance,

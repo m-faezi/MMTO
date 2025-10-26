@@ -10,9 +10,9 @@ class Image:
         self.reduced_image = None
         self.header = None
 
-    def get_image(self, arguments):
+    def get_image(self, file_path):
 
-        self.image, self.header = io_utils.read_image_data(arguments.file_path)
+        self.image, self.header = io_utils.read_image_data(file_path)
 
         return self
 

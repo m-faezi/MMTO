@@ -4,19 +4,19 @@ import os
 import pandas as pd
 
 
-def save_run_metadata(run, tree_id):
+def save_run_metadata(run, band_args, tree_id):
 
     metadata = {
         "software": "mmtolib",
         "version": "1.0.0",
         "time_stamp": run.time_stamp,
-        "file_name": os.path.splitext(os.path.basename(run.arguments.file_path))[0],
+        "file_name": os.path.splitext(os.path.basename(band_args['file_path']))[0],
         "arguments": {
-            "background_mode": run.arguments.background_mode,
-            "move_factor": run.arguments.move_factor,
-            "area_ratio": run.arguments.area_ratio,
-            "s_sigma": run.arguments.s_sigma,
-            "G_fit": run.arguments.G_fit,
+            "background_mode": band_args['background_mode'],
+            "move_factor": band_args['move_factor'],
+            "area_ratio": band_args['area_ratio'],
+            "s_sigma": band_args['s_sigma'],
+            "G_fit": band_args['G_fit'],
             #"crop": run.arguments.crop
         }
     }

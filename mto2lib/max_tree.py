@@ -36,11 +36,11 @@ class MaxTree:
         return self
 
 
-    def compute_attributes(self, run, image):
+    def compute_attributes(self, band_args, image):
 
         (self.x, self.y, self.distances, self.distance_to_root_center, self.mean, self.variance, self.area,
         self.parent_area, self.gaussian_intensities, self.volume, self.parent_altitude, self.gamma, self.parent_gamma) \
-            = max_tree_attributes.compute_attributes(self.tree_structure, self.altitudes, run, image)
+            = max_tree_attributes.compute_attributes(self.tree_structure, self.altitudes, band_args, image)
 
         return self
 
@@ -56,7 +56,7 @@ class MaxTree:
     def move_up(
             self,
             dark_frame,
-            run
+            band_args
     ):
 
         main_branch_local = statistical_tests.attribute_main_branch(self.tree_structure, self.area)
@@ -79,28 +79,28 @@ class MaxTree:
             )
         )
 
-        target_altitudes[object_indexes] = self.altitudes[object_indexes] + run.arguments.move_factor * local_noise
+        target_altitudes[object_indexes] = self.altitudes[object_indexes] + band_args['move_factor'] * local_noise
 
         target_altitudes = target_altitudes[closest_object_ancestor]
 
-        if not run.arguments.G_fit:
+        if not band_args['G_fit']:
 
             valid_moves = np.logical_and(
                 self.altitudes >= target_altitudes,
                 np.logical_and(
                     self.init_segments[closest_object_ancestor],
-                    self.area / self.parent_area >= run.arguments.area_ratio
+                    self.area / self.parent_area >= band_args['area_ratio']
                 )
             )
 
-        elif run.arguments.G_fit:
+        elif band_args['G_fit']:
 
             valid_moves = np.logical_and(
                 np.logical_and(
                     self.altitudes >= target_altitudes,
                     np.logical_and(
                         self.init_segments[closest_object_ancestor],
-                        self.area / self.parent_area >= run.arguments.area_ratio
+                        self.area / self.parent_area >= band_args['area_ratio']
                     )
                 ),
                 self.altitudes / self.area >= self.gaussian_intensities

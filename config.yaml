@@ -1,0 +1,27 @@
+
+bands:
+
+  band1:
+    file_path: "./data/1.fits"
+    background_mode: "const"
+    move_factor: 0.0
+    area_ratio: 0.90
+    s_sigma: 2
+    G_fit: false
+
+  band2:
+    file_path: "./data/2.fits"
+    background_mode: "const"
+    move_factor: 0.0
+    area_ratio: 0.90
+    s_sigma: 2
+    G_fit: false
+
+  band3:
+    file_path: "./data/3.fits"
+    background_mode: "const"
+    move_factor: 0.0
+    area_ratio: 0.90
+    s_sigma: 2
+    G_fit: false
+
