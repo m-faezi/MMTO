@@ -18,7 +18,7 @@ class Run:
         self.status = "Running"
         self.time_stamp = datetime.now().isoformat()
         self.results_dir = os.path.join("./results", self.time_stamp)
-        
+
         os.makedirs(self.results_dir, exist_ok=True)
 
         with open('config.yaml', 'r') as f:

@@ -23,7 +23,7 @@ def mmto_run():
         print(f"Processing band: {band_name}")
 
         fit_file = band_args['file_path']
-        tree_id = f"{band_name}_{str(uuid.uuid4())[:8]}"
+        tree_id = str(uuid.uuid4())[:8]
         tree_ids.append(tree_id)
 
         image = Image()

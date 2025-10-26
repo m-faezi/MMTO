@@ -7,10 +7,10 @@ import pandas as pd
 def save_run_metadata(run, band_args, tree_id):
 
     metadata = {
-        "software": "mmtolib",
+        "software": "MMTO",
         "version": "1.0.0",
         "time_stamp": run.time_stamp,
-        "file_name": os.path.splitext(os.path.basename(band_args['file_path']))[0],
+        "file_name": band_args['file_path'],
         "arguments": {
             "background_mode": band_args['background_mode'],
             "move_factor": band_args['move_factor'],
