@@ -77,8 +77,6 @@ setup(
     cmdclass=dict(build_ext=CMakeBuild),
     include_package_data=True,
     install_requires=[
-        'higra>=0.6.12',
-        'numpy>=2.3',
         'cmake>=3.1.0',
         'Pillow>=8.1.2',
         'pandas>=1.2.4',
@@ -87,10 +85,8 @@ setup(
         'scikit-build',
         'fuzzy-c-means',
         'scikit-learn',
-        'pybind11>=2.12',
     ],
     zip_safe=False
 )
-
 
 
