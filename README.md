@@ -24,7 +24,7 @@ source mmto/bin/activate
 pip install -r ./requirements/requirements_base.txt
 pip install -r ./requirements/requirements_torch.txt || pip install -r ./requirements/requirements_torch_fallback.txt
 pip install -U pip setuptools wheel scikit-build cmake ninja
-pip install ./mmtolib
+pip install --no-build-isolation ./mmtolib
 ```
 
 ### Overview
