@@ -1,6 +1,4 @@
-# MMTO
-
-Multi-spectral source detection tool
+# <span style="color:#FF0000">M</span>MTO - <span  style="color:#666666">Multi-spectral Astronomical Source Detection Tool</span>
 
 [![DOI](https://img.shields.io/badge/DOI-10.1515/ACCESS-000.svg)](https://doi.org/10.1109/ACCESS.2024.3403309)
 [![Higra](https://img.shields.io/badge/Powered%20by-Higra-000.svg)](https://higra.readthedocs.io/)
