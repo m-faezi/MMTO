@@ -6,7 +6,7 @@ Multi-spectral source detection tool
 [![Higra](https://img.shields.io/badge/Powered%20by-Higra-000.svg)](https://higra.readthedocs.io/)
 [![Astropy](https://img.shields.io/badge/powered%20by-Astropy-000.svg)](https://www.astropy.org/)
 
-MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and color extraction software, representing and processing on max-tree ([Salembier et al.](#2)) data structure across multiple spectral bands.
+MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and color extraction software, representing and processing on max-tree ([Salembier et al.](#2)) data structure across multiple spectral bands, built on [![MTO2](https://img.shields.io/badge/📡-MTO2-purple?style=for-the-badge&logo=github)](https://github.com/m-faezi/MTO2).
 
 - **Multi-band processing**: Simultaneous analysis across multiple spectral bands
 - **Cross-band matching**: Intelligent source association between bands using spatial and similarity metrics
