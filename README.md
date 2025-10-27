@@ -6,8 +6,7 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-66ff00.svg)](https://github.com/m-faezi/MMTO/blob/main/CONTRIBUTING.md)
 
 
-MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and color extraction software, representing and processing on max-tree ([Salembier et al.](#2)) data structure across multiple spectral bands, built on [![MTO2](https://img.shields.io/badge/📡-MTO2-purple?style=for-the-badge&logo=github)](https://github.com/m-faezi/MTO2).
-
+MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and color extraction software, representing and processing on max-tree ([Salembier et al.](#2)) data structure across multiple spectral bands, built on [![MTO2](https://img.shields.io/badge/📡-MTO2-purple?style=flat&logo=github)](https://github.com/m-faezi/MTO2).
 - **Multi-band processing**: Simultaneous analysis across multiple spectral bands
 - **Cross-band matching**: Intelligent source association between bands using spatial and similarity metrics
 
