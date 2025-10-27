@@ -40,11 +40,11 @@ python main.py --co_sim 0.9 --pix_dist 3.0
 
 ### Command line arguments
 
-| Option              | Description                                 | Type      | Default                    | Range/Values |
-|---------------------|---------------------------------------------|-----------|----------------------------|--------------|
-| `--pix_dist`        | Cross-band central distance (pixel)         | float     | 0.00                       | ≥ 0          |
-| `--co_sim`          | Cross-band cosine similarity threshold      | float     | 0.90                       | [0.0, 1.0)   |
-| `-h`, `--help`      | Show the help message and exit              | flag      | -                          | -            |
+| Option              | Description                                 | Type      | Default | Range/Values |
+|---------------------|---------------------------------------------|-----------|---------|--------------|
+| `--pix_dist`        | Cross-band central distance (pixel)         | float     | 3.00    | ≥ 0          |
+| `--co_sim`          | Cross-band cosine similarity threshold      | float     | 0.90    | [0.0, 1.0)   |
+| `-h`, `--help`      | Show the help message and exit              | flag      | -       | -            |
 
 
 ## Bibliography
