@@ -33,25 +33,29 @@ def mmto_run():
             image.get_image(fit_file)
             image.preprocess_image(band_args['s_sigma'])
 
-            try:
+            if band_args['background_mode'] == 'const':
 
-                if band_args['background_mode'] == 'const':
+                try:
 
                     dark_frame.estimate_const_bg(image.smooth_image)
+                    dark_frame.create_reduced_image(image, run.results_dir)
 
-                else:
+                    maxtree = MaxTree()
+                    maxtree.construct_max_tree(image.reduced_image)
+                    maxtree.compute_attributes(run, image)
 
-                    dark_frame.estimate_morph_bg(image, None)
+                except Exception as e:
 
-                dark_frame.create_reduced_image(image, run.results_dir)
+                    band_args['background_mode'] = 'morph'
 
-                maxtree = MaxTree()
-                maxtree.construct_max_tree(image.smooth_image)
-                maxtree.compute_attributes(band_args, image)
+                    print(f"Note: Background mode switched to '{band_args['background_mode']}'!")
 
-            except Exception as e:
+                    maxtree = MaxTree()
+                    maxtree.construct_max_tree(image.smooth_image)
+                    maxtree.compute_attributes(band_args, image)
+                    dark_frame.estimate_morph_bg(image, maxtree)
 
-                print(f"Note: Switching to morphological background for {band_name}!")
+            else:
 
                 maxtree = MaxTree()
                 maxtree.construct_max_tree(image.smooth_image)
@@ -91,7 +95,7 @@ def mmto_run():
             run.status = "Interrupted"
             io_utils.save_run_metadata(run, band_args, _id)
 
-            print("\nMTO2 run interrupted by user!")
+            print("\nMMTO run interrupted by user!")
             sys.exit(1)
 
         except Exception as e:
@@ -99,7 +103,7 @@ def mmto_run():
             run.status = "Terminated"
             io_utils.save_run_metadata(run, band_args, _id)
 
-            print(f"\nMTO2 run terminated with error: {e}")
+            print(f"\nMMTO run terminated with error: {e}")
 
             sys.exit(1)
 
