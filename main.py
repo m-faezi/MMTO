@@ -46,7 +46,7 @@ def mmto_run():
                 dark_frame.create_reduced_image(image, run.results_dir)
 
                 maxtree = MaxTree()
-                maxtree.construct_max_tree(image.reduced_image)
+                maxtree.construct_max_tree(image.smooth_image)
                 maxtree.compute_attributes(band_args, image)
 
             except Exception as e:
