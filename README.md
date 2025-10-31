@@ -34,8 +34,8 @@ MMTO extends multiple max-trees by integrating semantically meaningful node part
 The dependencies are listed in the [./requirements](requirements) directory.
 
 ```bash
-python -m venv mmto
-source mmto/bin/activate
+python -m venv ./venvs/mmto
+source ./venvs/mmto/bin/activate
 pip install -r ./requirements/requirements_base.txt
 pip install -r ./requirements/requirements_torch.txt || pip install -r ./requirements/requirements_torch_fallback.txt
 pip install -U pip setuptools wheel scikit-build cmake ninja
