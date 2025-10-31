@@ -25,10 +25,11 @@ def mmto_run():
         _id = str(uuid.uuid4())[:8]
         fit_file = band_args['file_path']
 
-        try:
+        image = Image()
 
-            image = Image()
-            dark_frame = DarkFrame()
+        dark_frame = DarkFrame()
+
+        try:
 
             image.get_image(fit_file)
             image.preprocess_image(band_args['s_sigma'])
