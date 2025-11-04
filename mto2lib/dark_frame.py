@@ -36,14 +36,9 @@ class DarkFrame:
 
         return self
 
-    def create_reduced_image(self, image, results_dir):
+    def create_reduced_image(self, image):
 
         image.reduced_image = image.image - self.bg_mean
-        reduced_output = os.path.join(results_dir, "reduced.fits")
-
-        io_utils.save_fits_with_header(image.reduced_image, image.header, reduced_output)
-
-        print(f"Saved reduced image to: {reduced_output}")
 
         return self
 

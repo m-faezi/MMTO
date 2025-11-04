@@ -39,10 +39,10 @@ def mmto_run():
                 try:
 
                     dark_frame.estimate_const_bg(image.smooth_image)
-
                     maxtree = MaxTree()
+                    dark_frame.create_reduced_image(image)
                     maxtree.construct_max_tree(image.reduced_image)
-                    maxtree.compute_attributes(run, image)
+                    maxtree.compute_attributes(band_args, image)
 
                 except Exception as e:
 
@@ -63,6 +63,7 @@ def mmto_run():
                 dark_frame.estimate_morph_bg(image, maxtree)
 
             tree_ids.append(_id)
+            dark_frame.create_reduced_image(image)
 
             maxtree.detect_significant_objects(dark_frame)
             maxtree.move_up(dark_frame, band_args)
