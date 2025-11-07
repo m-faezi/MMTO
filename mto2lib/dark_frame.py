@@ -1,6 +1,7 @@
 from mto2lib import preprocessing
 from mto2lib.utils import io_utils
 import os
+import numpy as np
 
 
 class DarkFrame:
@@ -38,7 +39,7 @@ class DarkFrame:
 
     def create_reduced_image(self, image):
 
-        image.reduced_image = image.image - self.bg_mean
+        image.reduced_image = image.image - np.max(self.bg_mean, 0)
 
         return self
 
