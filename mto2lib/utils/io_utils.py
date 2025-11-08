@@ -21,6 +21,7 @@ def save_run_metadata(run, band_args, tree_id):
             "area_ratio": band_args['area_ratio'],
             "s_sigma": band_args['s_sigma'],
             "G_fit": band_args['G_fit'],
+            "skip_reduction": band_args['skip_reduction'],
             #"crop": run.arguments.crop
         }
     }
