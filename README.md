@@ -25,6 +25,8 @@ MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and c
 MMTO extends multiple max-trees by integrating semantically meaningful node partitions, derived from statistical tests, into a structured graph. This integration enables the exploration of correlations among cross-band emissions, enhancing segmentation accuracy.
 <p align="center">
     <img src="./assets/MMTO-pipeline.svg" alt="MMTO-pipeline" width="93.6%">
+    <br>
+    <em>MMTO</em> processing pipeline workflow.
 </p>
 
 ## Installation
