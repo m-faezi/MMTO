@@ -83,7 +83,7 @@ def mmto_run():
 
             tree_ids.append(_id)
 
-            maxtree.detect_significant_objects(dark_frame)
+            maxtree.detect_significant_objects(dark_frame, band_args)
             maxtree.move_up(dark_frame, band_args)
 
             extractor = Extractor()
