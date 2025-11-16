@@ -58,6 +58,24 @@ python main.py --co_sim 0.9 --pix_dist 3.0
 | `-h`, `--help`      | Show the help message and exit              | flag      | -       | -            |
 
 
+## Citation
+
+If you use MMTO in your research, please cite the following paper:
+
+```bibtex
+@ARTICLE{10535192,
+  author={Hashem Faezi, Mohammad and Peletier, Reynier and Wilkinson, Michael H. F.},
+  journal={IEEE Access}, 
+  title={Multi-Spectral Source-Segmentation Using Semantically-Informed Max-Trees}, 
+  year={2024},
+  volume={12},
+  number={},
+  pages={72288-72302},
+  doi={10.1109/ACCESS.2024.3403309}
+}
+```
+
+
 ## Bibliography
 
 - <a id="1">Faezi M. H., Peletier R., & Wilkinson M. H. (2024). “Multi-Spectral Source-Segmentation Using Semantically-Informed Max-Trees”. In: *IEEE Access* 12, pp. 72288 - 72302. DOI: [10.1109/ACCESS.2024.3403309](https://doi.org/10.1109/ACCESS.2024.3403309).</a>
