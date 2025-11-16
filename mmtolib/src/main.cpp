@@ -157,8 +157,8 @@ namespace hg {
             }
 
             std::stringstream csv_content;
-            //csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,flux_i,flux_j,cosine_similarity,distance\n";
-            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id,cosine_similarity,distance\n";
+
+            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id\n";
 
             int match_count = 0;
 
@@ -224,9 +224,7 @@ namespace hg {
 
                             if (cos_sim >= co_sim) {
                                 csv_content << tree_ids[i] << "," << n_id << ","
-                                           << tree_ids[j] << "," << m_id << ","
-                                           //<< flux_i_val << "," << flux_j_val << ","
-                                           << cos_sim << "," << dist << "\n";
+                                           << tree_ids[j] << "," << m_id << "\n";
                                 match_count++;
                             }
                         }
