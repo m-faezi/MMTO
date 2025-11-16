@@ -18,6 +18,7 @@ MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and c
   - [Dependencies](#dependencies)
   - [Tuned run](#tuned-run)
   - [Command line arguments](#command-line-arguments)
+- [Citation](#citation)
 - [Bibliography](#bibliography)
 - [License](#license)
 
