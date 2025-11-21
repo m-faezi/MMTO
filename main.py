@@ -43,7 +43,7 @@ def mmto_run():
 
                     if band_args['skip_reduction']:
 
-                        dark_frame.bg_mean = 0
+                        dark_frame.bg_map = 0
 
                     dark_frame.create_reduced_image(image)
 
@@ -53,10 +53,6 @@ def mmto_run():
 
                 except Exception as e:
 
-                    band_args['background_mode'] = 'morph'
-
-                    print(f"Note: Background mode switched to '{band_args['background_mode']}'!")
-
                     maxtree = MaxTree()
                     maxtree.construct_max_tree(image.smooth_image)
                     maxtree.compute_attributes(band_args, image)
@@ -64,7 +60,11 @@ def mmto_run():
 
                     if band_args['skip_reduction']:
 
-                        dark_frame.bg_mean = 0
+                        dark_frame.bg_map = 0
+
+                    else:
+
+                        dark_frame.bg_map = dark_frame.bg_mean
 
                     dark_frame.create_reduced_image(image)
 
@@ -77,7 +77,7 @@ def mmto_run():
 
                 if band_args['skip_reduction']:
 
-                    dark_frame.bg_mean = 0
+                    dark_frame.bg_map = 0
 
                 dark_frame.create_reduced_image(image)
 

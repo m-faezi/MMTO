@@ -39,8 +39,8 @@ class DarkFrame:
 
     def create_reduced_image(self, image):
 
-        image.reduced_image = image.image - np.max(self.bg_mean, 0)
-        image.smooth_reduced_image = image.smooth_image - np.max(self.bg_mean, 0)
+        image.reduced_image = image.image - np.max(self.bg_map, 0)
+        image.smooth_reduced_image = image.smooth_image - np.max(self.bg_map, 0)
 
         return self
 
