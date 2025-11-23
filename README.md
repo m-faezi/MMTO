@@ -48,6 +48,10 @@ pip install --no-build-isolation ./mmtolib
 ```
 
 ## Usage
+> [!TIP]
+> MMTO supports any number of bands to be processed.
+> In this version, input images should have the same resolution (pixels) and sly coordinates.
+
 ### Configuration
 Configure the bands and processing parameters (see [MTO2 documentation](https://github.com/m-faezi/MTO2)) in config.yaml file.
 Here is an instance of 4-band setting:
