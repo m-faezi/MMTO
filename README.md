@@ -4,6 +4,7 @@
 [![Higra](https://img.shields.io/badge/Powered%20by-Higra-000.svg)](https://higra.readthedocs.io/)
 [![Astropy](https://img.shields.io/badge/powered%20by-Astropy-000.svg)](https://www.astropy.org/)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-66ff00.svg)](https://github.com/m-faezi/MMTO/blob/main/CONTRIBUTING.md)
+[![Matrix](https://img.shields.io/badge/Matrix-Join%20Chat-brightgreen?logo=matrix&logoColor=white)](https://matrix.to/#/%23MMTO:matrix.org)
 
 
 MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and color extraction software, representing and processing on max-tree ([Salembier et al.](#2)) data structure across multiple spectral bands, built on [![MTO2](https://img.shields.io/badge/📡-MTO2-purple?style=flat&logo=github)](https://github.com/m-faezi/MTO2).
