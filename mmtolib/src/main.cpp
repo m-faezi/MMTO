@@ -158,7 +158,7 @@ namespace hg {
 
             std::stringstream csv_content;
 
-            csv_content << "tree_i_id,object_i_id,tree_j_id,object_j_id\n";
+            csv_content << "band_id,object_id,matched_band_id,matched_object_id\n";
 
             int match_count = 0;
 
