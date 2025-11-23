@@ -18,6 +18,7 @@ class MaxTree:
         self.mean = None
         self.variance = None
         self.area = None
+        self.convexness = None
         self.parent_area = None
         self.gaussian_intensities = None
         self.volume = None
@@ -39,8 +40,8 @@ class MaxTree:
     def compute_attributes(self, band_args, image):
 
         (self.x, self.y, self.distances, self.distance_to_root_center, self.mean, self.variance, self.area,
-        self.parent_area, self.gaussian_intensities, self.volume, self.parent_altitude, self.gamma, self.parent_gamma) \
-            = max_tree_attributes.compute_attributes(self.tree_structure, self.altitudes, band_args, image)
+        self.parent_area, self.gaussian_intensities, self.volume, self.parent_altitude, self.gamma, self.parent_gamma,
+        self.convexness) = max_tree_attributes.compute_attributes(self.tree_structure, self.altitudes, band_args, image)
 
         return self
 
