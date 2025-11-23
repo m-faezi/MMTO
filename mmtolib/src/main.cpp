@@ -174,7 +174,8 @@ namespace hg {
                     adj_lists[node_maps[i](parent(n, trees[i]))].push_back(represent_n);
 
                     for (index_t j = 0; j < ntrees; j++) {
-                        if (j <= i) continue;
+                        // if (j <= i) continue;
+                        if (j == i) continue;
 
                         trees[j].compute_children();
                         auto ses_ij_n = ses(i, j)(n);
