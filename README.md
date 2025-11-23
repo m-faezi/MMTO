@@ -16,13 +16,15 @@ MMTO ([Faezi et al.](#1)) is a multi-spectral photometric object detection and c
 - [Overview](#overview)
 - [Installation](#installation)
   - [Dependencies](#dependencies)
+- [Usage](#usage)
+  - [Configuration](#configuration)
   - [Tuned run](#tuned-run)
   - [Command line arguments](#command-line-arguments)
 - [Citation](#citation)
 - [Bibliography](#bibliography)
 - [License](#license)
 
-### Overview
+## Overview
 MMTO extends multiple max-trees by integrating semantically meaningful node partitions, derived from statistical tests, into a structured graph. This integration enables the exploration of correlations among cross-band emissions, enhancing segmentation accuracy.
 <p align="center">
     <img src="./assets/MMTO-pipeline.svg" alt="MMTO-pipeline" width="93.6%">
@@ -44,6 +46,52 @@ pip install -r ./requirements/requirements_torch.txt || pip install -r ./require
 pip install -U pip setuptools wheel scikit-build cmake ninja
 pip install --no-build-isolation ./mmtolib
 ```
+
+## Usage
+### Configuration
+Configure the bands and processing parameters (see [MTO2 documentation](https://github.com/m-faezi/MTO2)) in config.yaml file.
+Here is an instance of 4-band setting:
+
+```yaml
+bands:
+  
+  band_1:
+    file_path: "./1st.fits"
+    background_mode: "const"
+    move_factor: 5
+    area_ratio: 0.90
+    s_sigma: 4.0
+    G_fit: false
+    skip_reduction: true
+  
+  band_2:
+    file_path: "./2nd.fits"
+    background_mode: "morph"
+    move_factor: 8
+    area_ratio: 0.90
+    s_sigma: 4.0
+    G_fit: true
+    skip_reduction: false
+  
+  band_3:
+    file_path: "./3rd.fits"
+    background_mode: "const"
+    move_factor: 8
+    area_ratio: 0.93
+    s_sigma: 2.7
+    G_fit: true
+    skip_reduction: true
+  
+  band_4:
+    file_path: "./4th.fits"
+    background_mode: "const"
+    move_factor: 3
+    area_ratio: 0.93
+    s_sigma: 3.13
+    G_fit: false
+    skip_reduction: true
+```
+
 
 ### Tuned run
 ```bash
