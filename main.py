@@ -43,7 +43,7 @@ def mmto_run():
 
                     if band_args['skip_reduction']:
 
-                        dark_frame.bg_map = 0
+                        dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
 
                     dark_frame.create_reduced_image(image)
 
@@ -60,11 +60,11 @@ def mmto_run():
 
                     if band_args['skip_reduction']:
 
-                        dark_frame.bg_map = 0
+                        dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
 
                     else:
 
-                        dark_frame.bg_map = dark_frame.bg_mean
+                        dark_frame.bg_map = np.full_like(image.image, dark_frame.bg_mean, dtype=np.float32)
 
                     dark_frame.create_reduced_image(image)
 
@@ -77,7 +77,7 @@ def mmto_run():
 
                 if band_args['skip_reduction']:
 
-                    dark_frame.bg_map = 0
+                    dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
 
                 dark_frame.create_reduced_image(image)
 
