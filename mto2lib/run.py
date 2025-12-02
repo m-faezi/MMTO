@@ -13,6 +13,15 @@ class Run:
         self.status = None
         self.time_stamp = None
         self.config = None
+        self.trees = []
+        self.latitudes = []
+        self.longitudes = []
+        self.fluxes = []
+        self.volumes = []
+        self.gammas = []
+        self.areas = []
+        self.ids = []
+        self.tree_ids = []
 
     def setup_args(self):
 

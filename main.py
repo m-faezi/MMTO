@@ -11,8 +11,6 @@ from mto2lib.utils import io_utils, base_utils
 import sys
 
 
-trees, latitudes, longitudes, fluxes, volumes, gammas, areas, ids, tree_ids = [], [], [], [], [], [], [], [], []
-
 
 def mmto_run():
 
@@ -81,7 +79,7 @@ def mmto_run():
 
                 dark_frame.create_reduced_image(image)
 
-            tree_ids.append(_id)
+            run.tree_ids.append(_id)
 
             maxtree.detect_significant_objects(dark_frame, band_args)
             maxtree.move_up(dark_frame, band_args)
@@ -99,14 +97,14 @@ def mmto_run():
 
             flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
 
-            trees.append(extractor.maxtree_of_segment)
-            latitudes.append(maxtree.x[extractor.segment_node_map])
-            longitudes.append(maxtree.y[extractor.segment_node_map])
-            fluxes.append(base_utils.normalize(flux))
-            gammas.append(maxtree.gamma[extractor.segment_node_map])
-            ids.append(label_data)
-            areas.append(base_utils.normalize(maxtree.area[extractor.segment_node_map]))
-            volumes.append(base_utils.normalize(maxtree.volume[extractor.segment_node_map]))
+            run.trees.append(extractor.maxtree_of_segment)
+            run.latitudes.append(maxtree.x[extractor.segment_node_map])
+            run.longitudes.append(maxtree.y[extractor.segment_node_map])
+            run.fluxes.append(base_utils.normalize(flux))
+            run.gammas.append(maxtree.gamma[extractor.segment_node_map])
+            run.ids.append(label_data)
+            run.areas.append(base_utils.normalize(maxtree.area[extractor.segment_node_map]))
+            run.volumes.append(base_utils.normalize(maxtree.volume[extractor.segment_node_map]))
 
             run.status = "Completed"
             io_utils.save_run_metadata(run, band_args, _id)
@@ -129,15 +127,15 @@ def mmto_run():
             sys.exit(1)
 
     mmto.tree_map(
-        trees,
-        latitudes,
-        longitudes,
-        fluxes,
-        gammas,
-        areas,
-        volumes,
-        ids,
-        tree_ids,
+        run.trees,
+        run.latitudes,
+        run.longitudes,
+        run.fluxes,
+        run.gammas,
+        run.areas,
+        run.volumes,
+        run.ids,
+        run.tree_ids,
         run.time_stamp,
         run.arguments.co_sim,
         run.arguments.pix_dist,
