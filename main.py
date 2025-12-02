@@ -91,9 +91,11 @@ def mmto_run():
             extractor.extract_parameters(extractor, maxtree, run, image, _id)
 
             tree_of_segments = extractor.maxtree_of_segment
-            segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
+            unique_segment_ids = extractor.ids
+
             label_data = np.full(tree_of_segments.num_vertices(), -1, dtype=np.int32)
-            label_data[segment_ids] = np.arange(len(segment_ids))
+            segment_ids = np.arange(tree_of_segments.num_leaves(), tree_of_segments.num_vertices())
+            label_data[segment_ids] = unique_segment_ids[segment_ids]
 
             flux = hg.accumulate_sequential(tree_of_segments, image.image, hg.Accumulators.sum)
 
