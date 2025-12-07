@@ -9,11 +9,11 @@ def extract_parameters(
         header,
         tree_of_segments,
         n_map_segments,
-        parent_altitude,
+        altitudes,
         area,
         convexness,
-        parent_area,
         unique_segment_ids,
+        parent_segment_ids,
         run,
         tree_id
 ):
@@ -40,6 +40,10 @@ def extract_parameters(
     r_eff = [uts.half_light_radius(image, coords) for coords in coords_per_segment]
     r_fwhm = [uts.compute_r_fwhm(image, coords) for coords in coords_per_segment]
 
+    mean_median_vals = [uts.compute_segment_mean_median(image, coords) for coords in coords_per_segment]
+    mean_pixel = [val[0] for val in mean_median_vals]
+    median_pixel = [val[1] for val in mean_median_vals]
+
     centroids = [uts.weighted_centroid_coords_from_segments(image, coords) for coords in coords_per_segment]
 
     y = [cen[0] for cen in centroids]
@@ -61,7 +65,7 @@ def extract_parameters(
         dec[::-1],
         flux[tree_of_segments.num_leaves():][::-1],
         flux[tree_of_segments.num_leaves():][::-1] -
-        ((parent_altitude/parent_area)*area)[n_map_segments][tree_of_segments.num_leaves():][::-1],
+        np.abs((altitudes/area)[n_map_segments][tree_of_segments.num_leaves():][::-1]),
         area[n_map_segments][tree_of_segments.num_leaves():][::-1],
         convexness[n_map_segments][tree_of_segments.num_leaves():][::-1],
         a[tree_of_segments.num_leaves():][::-1],
@@ -69,6 +73,9 @@ def extract_parameters(
         theta[tree_of_segments.num_leaves():][::-1],
         r_eff[::-1],
         r_fwhm[::-1],
+        mean_pixel[::-1],
+        median_pixel[::-1],
+        parent_segment_ids[tree_of_segments.num_leaves():][::-1],
         file_name=output_csv
     )
 

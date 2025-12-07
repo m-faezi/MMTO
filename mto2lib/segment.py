@@ -19,5 +19,5 @@ def get_segmentation_map(tree_structure, modified_isophote, header, run, tree_id
 
     io_uts.save_fits_with_header(seg_with_ids, header, output_fits)
 
-    return tree_of_segments, n_map_segments, unique_segment_ids
+    return tree_of_segments, n_map_segments, unique_segment_ids, unique_segment_ids[tree_of_segments.parents()]
 
