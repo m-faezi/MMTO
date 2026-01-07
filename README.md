@@ -129,6 +129,10 @@ If you use MMTO in your research, please cite the following paper:
 }
 ```
 
+## Acknowledgments
+
+This software was developed for **[Faint Object Detection in Multidimensional Astronomical Data](https://research.rug.nl/en/publications/faint-object-detection-in-multidimensional-astronomical-data/)** Ph.D. thesis (Mohammad H. Faezi, 2026) at the Rijksuniversiteit of Groningen under the supervision of Dr. Michael Wilkinson, Prof. Dr. Reynier Peletier and Prof. Dr. Nicolai Petkov.
+
 
 ## Bibliography
 
