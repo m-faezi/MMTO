@@ -32,7 +32,7 @@ bands:
     crop: [ 500, 500, 1000, 1000 ]
 
   band_4:
-    file_path: "./4th.fits"
+    file_path: "./4.fits"
     background_mode: "const"
     move_factor: 3
     area_ratio: 0.93
