@@ -2,31 +2,34 @@
 bands:
 
   band_1:
-    file_path: "./1st.fits"
+    file_path: "./1.fits"
     background_mode: "const"
-    move_factor: 5
+    move_factor: .5
     area_ratio: 0.90
-    s_sigma: 4.0
+    s_sigma: .0
     G_fit: false
     skip_reduction: true
+    crop: [500, 500, 1000, 1000]
 
   band_2:
-    file_path: "./2nd.fits"
+    file_path: "./2.fits"
     background_mode: "morph"
     move_factor: 8
     area_ratio: 0.90
     s_sigma: 4.0
     G_fit: true
     skip_reduction: false
+    crop: [500, 500, 1000, 1000]
 
   band_3:
-    file_path: "./3rd.fits"
+    file_path: "./3.fits"
     background_mode: "const"
     move_factor: 8
     area_ratio: 0.93
     s_sigma: 2.7
     G_fit: true
     skip_reduction: true
+    crop: [ 500, 500, 1000, 1000 ]
 
   band_4:
     file_path: "./4th.fits"
@@ -36,5 +39,6 @@ bands:
     s_sigma: 3.13
     G_fit: false
     skip_reduction: true
+    crop: [500, 500, 1000, 1000]
 
 

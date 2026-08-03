@@ -11,9 +11,9 @@ class Image:
         self.smooth_reduced_image = None
         self.header = None
 
-    def get_image(self, file_path):
+    def get_image(self, file_path, crop_coords):
 
-        self.image, self.header = io_utils.read_image_data(file_path)
+        self.image, self.header = io_utils.read_image_data(file_path, crop_coords)
 
         return self
 
