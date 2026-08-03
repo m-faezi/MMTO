@@ -29,7 +29,7 @@ def mmto_run():
 
         try:
 
-            image.get_image(fit_file)
+            image.get_image(fit_file, band_args['crop'])
             image.preprocess_image(band_args['s_sigma'])
 
             if band_args['background_mode'] == 'const':
