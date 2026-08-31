@@ -39,11 +39,9 @@ def mmto_run():
                     dark_frame.estimate_const_bg(image.smooth_image)
 
 
-                    if band_args['skip_reduction']:
+                    if band_args['reduce']:
 
-                        dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
-
-                    dark_frame.create_reduced_image(image)
+                        dark_frame.create_reduced_image(image)
 
                     maxtree = MaxTree()
                     maxtree.construct_max_tree(image.smooth_reduced_image)
@@ -56,15 +54,10 @@ def mmto_run():
                     maxtree.compute_attributes(band_args, image)
                     dark_frame.estimate_morph_bg(image, maxtree)
 
-                    if band_args['skip_reduction']:
-
-                        dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
-
-                    else:
+                    if band_args['reduce']:
 
                         dark_frame.bg_map = np.full_like(image.image, dark_frame.bg_mean, dtype=np.float32)
-
-                    dark_frame.create_reduced_image(image)
+                        dark_frame.create_reduced_image(image)
 
             else:
 
@@ -73,11 +66,9 @@ def mmto_run():
                 maxtree.compute_attributes(band_args, image)
                 dark_frame.estimate_morph_bg(image, maxtree)
 
-                if band_args['skip_reduction']:
+                if band_args['reduce']:
 
-                    dark_frame.bg_map = np.full_like(image.image, 0, dtype=np.float32)
-
-                dark_frame.create_reduced_image(image)
+                    dark_frame.create_reduced_image(image)
 
             run.tree_ids.append(_id)
 
