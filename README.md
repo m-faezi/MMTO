@@ -67,7 +67,7 @@ bands:
     area_ratio: 0.90
     s_sigma: 4.0
     G_fit: false
-    skip_reduction: true
+    reduce: true
   
   band_2:
     file_path: "./2nd.fits"
@@ -76,7 +76,7 @@ bands:
     area_ratio: 0.90
     s_sigma: 4.0
     G_fit: true
-    skip_reduction: false
+    reduce: false
   
   band_3:
     file_path: "./3rd.fits"
@@ -85,7 +85,7 @@ bands:
     area_ratio: 0.93
     s_sigma: 2.7
     G_fit: true
-    skip_reduction: true
+    reduce: true
   
   band_4:
     file_path: "./4th.fits"
@@ -94,7 +94,7 @@ bands:
     area_ratio: 0.93
     s_sigma: 3.13
     G_fit: false
-    skip_reduction: true
+    reduce: true
 ```
 
 
