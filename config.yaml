@@ -8,7 +8,7 @@ bands:
     area_ratio: 0.90
     s_sigma: .0
     G_fit: false
-    skip_reduction: true
+    reduce: true
     crop: [500, 500, 1000, 1000]
 
   band_2:
@@ -18,7 +18,7 @@ bands:
     area_ratio: 0.90
     s_sigma: 4.0
     G_fit: true
-    skip_reduction: false
+    reduce: false
     crop: [500, 500, 1000, 1000]
 
   band_3:
@@ -28,7 +28,7 @@ bands:
     area_ratio: 0.93
     s_sigma: 2.7
     G_fit: true
-    skip_reduction: true
+    reduce: false
     crop: [ 500, 500, 1000, 1000 ]
 
   band_4:
@@ -38,7 +38,7 @@ bands:
     area_ratio: 0.93
     s_sigma: 3.13
     G_fit: false
-    skip_reduction: true
+    reduce: false
     crop: [500, 500, 1000, 1000]
 
 
