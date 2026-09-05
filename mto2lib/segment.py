@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image, ImageOps
 from mto2lib.utils import io_utils as io_uts
 import os
-from random import randint
+
 
 def get_segmentation_map(tree_structure, modified_isophote, header, run, tree_id):
 
