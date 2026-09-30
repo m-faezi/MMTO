@@ -20,5 +20,11 @@ def make_parser():
         help='cross_band cosine similarity (default = .90)'
     )
 
+    parser.add_argument(
+        '--out_dir',
+        type=str,
+        help='Path to the output directory',
+    )
+
     return parser
 

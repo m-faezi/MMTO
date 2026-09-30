@@ -57,7 +57,7 @@ def extract_parameters(
     a, b, theta = uts.second_order_moments(tree_of_segments, image.shape[:2], image)
     flux = hg.accumulate_sequential(tree_of_segments, image, hg.Accumulators.sum)
 
-    results_dir = os.path.join("./results", run.time_stamp)
+    results_dir = run.results_dir
     output_csv = os.path.join(results_dir, str(tree_id)+".csv")
 
     uts.save_parameters(
