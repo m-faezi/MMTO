@@ -127,7 +127,7 @@ def mmto_run():
         run.volumes,
         run.ids,
         run.tree_ids,
-        run.time_stamp,
+        run.results_dir,
         run.arguments.co_sim,
         run.arguments.pix_dist,
     )

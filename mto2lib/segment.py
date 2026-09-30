@@ -14,7 +14,7 @@ def get_segmentation_map(tree_structure, modified_isophote, header, run, tree_id
     unique_segment_ids = np.arange(tree_of_segments.num_vertices())[::-1]
     seg_with_ids = hg.reconstruct_leaf_data(tree_of_segments, unique_segment_ids)
 
-    results_dir = os.path.join("./results", run.time_stamp)
+    results_dir = run.results_dir
     output_fits = os.path.join(results_dir, str(tree_id)+".fits")
 
     io_uts.save_fits_with_header(seg_with_ids, header, output_fits)

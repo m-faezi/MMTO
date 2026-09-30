@@ -1,6 +1,7 @@
 from datetime import datetime
 import os
 import yaml
+import shutil
 from mto2lib.parser import make_parser
 
 
@@ -29,6 +30,10 @@ class Run:
         self.arguments = make_parser().parse_args()
         self.time_stamp = datetime.now().isoformat()
         self.results_dir = os.path.join("./results", self.time_stamp)
+        if self.arguments.out_dir is not None:
+            self.results_dir = os.path.join("./results", self.arguments.out_dir)
+            if os.path.exists(self.results_dir):
+                shutil.rmtree(self.results_dir)
 
         os.makedirs(self.results_dir, exist_ok=True)
 

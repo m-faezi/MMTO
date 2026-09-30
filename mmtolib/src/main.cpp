@@ -98,7 +98,7 @@ namespace hg {
             const std::vector<xt::pyarray<double>> & volumes,
             const std::vector<xt::pyarray<double>> & ids,
             const std::vector<std::string> & tree_ids,
-            const std::string & timestamp,
+            const std::string & results_dir,
             const double co_sim,
             const double pix_dist
         ) {
@@ -234,8 +234,7 @@ namespace hg {
             }
 
             // Write CSV to file
-            std::string timestamp_dir = "./results/" + timestamp + "/";
-            std::string csv_file_path = timestamp_dir + "detection_correlation.csv";
+            std::string csv_file_path = results_dir + "/detection_correlation.csv";
             std::ofstream csv_file(csv_file_path);
 
             if (csv_file.is_open()) {
